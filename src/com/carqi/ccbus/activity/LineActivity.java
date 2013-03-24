@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,14 +45,14 @@ public class LineActivity extends Activity {
 			public void onClick(View v) {
 				String line = lineText.getText().toString();
 				if(line != null && !line.equals("")){
-					Log.i(TAG, "ÏßÂ·£º" + line);
+					Log.i(TAG, "ç«™ç‚¹ï¼š" + line);
 					BusService busService = new BusService(getApplicationContext());
 					bus = busService.findBus(line);
 					if(bus != null){
 						BusStation busSta = new BusStation();
 						String station = bus.getStation();
 						String[] temp = station.split("-");
-						Log.i(TAG, "Êý×é³¤¶È£º" + String.valueOf(temp.length));
+						Log.i(TAG, "ç«™æ€»æ•°" + String.valueOf(temp.length));
 						for(int i=0 ; i<temp.length ; i++){
 							if(temp[i] != null && !temp[i].equals("")){
 								busSta.setStation(temp[i]);
@@ -85,9 +84,9 @@ public class LineActivity extends Activity {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			new AlertDialog.Builder(LineActivity.this)
 					.setIcon(R.drawable.ic_launcher)
-					.setTitle("³¤´ºÀëÏß¹«½»")
-					.setMessage("ÄãÈ·¶¨ÍË³öÁËÅ¶?")
-					.setPositiveButton("È·¶¨",
+					.setTitle("é•¿æ˜¥ç¦»çº¿å…¬äº¤")
+					.setMessage("ä½ ç¡®å®šé€€å‡ºäº†å“¦?")
+					.setPositiveButton("ç¡®å®š",
 							new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface arg0,
@@ -96,7 +95,7 @@ public class LineActivity extends Activity {
 									LineActivity.this.finish();
 								}
 
-							}).setNegativeButton("È¡Ïû", null).show();
+							}).setNegativeButton("å–æ¶ˆ", null).show();
 			return true;
 		} else {
 			return super.onKeyDown(keyCode, event);

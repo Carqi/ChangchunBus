@@ -13,7 +13,7 @@ import com.carqi.ccbus.adapter.StationAdapter;
 import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.data.BusStation;
 /**
- * ªÒµ√’æµ„µƒ∑¥œÚΩ·∫œ
+ * Ëé∑ÂæóÂèçÂêëÁöÑËΩ¶Á´ôÂàóË°®
  * @author gaoxy
  *
  */
@@ -37,7 +37,7 @@ public class StationRevertActivity extends Activity {
 		for(int i=temp.length - 1 ; i>= 0 ; i--){
 			if(temp[i] != null && !temp[i].equals("")){
 				BusStation busSta = new BusStation();
-				Log.i(TAG, "’æµ„revert"+String.valueOf(i)+"£∫" + temp[i]);
+				Log.i(TAG, "Á´ôÂêçrevert"+String.valueOf(i)+"Ôºö" + temp[i]);
 				busSta.setStation(temp[i]);
 				stalist.add(busSta);
 			}

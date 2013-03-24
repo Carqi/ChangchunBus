@@ -15,8 +15,8 @@ public class BusService {
 		this.dbm = new DBManager(context);
 	}
 	/**
-	 * 查询公交线路
-	 * @param line 线路名称
+	 * 
+	 * @param line 
 	 * @return
 	 */
 	public Bus findBus(String line){

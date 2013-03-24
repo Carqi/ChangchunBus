@@ -24,13 +24,13 @@ import com.carqi.ccbus.data.BusStation;
 public class TabStationActivity extends TabActivity {
 	public static int RESULT = 1;
 	public static int REQUEST = 0;
-	/**
-	 * TabHost¿Ø¼ş
-	 */
+    /**
+     * TabHostæ§ä»¶
+     */
 	private TabHost mTabHost;
-	/**
-	 * TabWidget¿Ø¼ş
-	 */
+    /**
+     * TabWidgetæ§ä»¶
+     */
 	private TabWidget mTabWidget;
 	private Bus bus = null;
 	private Button back;
@@ -46,7 +46,7 @@ public class TabStationActivity extends TabActivity {
 		init();
 		
 		mTabHost = this.getTabHost();
-		/* È¥³ı±êÇ©ÏÂ·½µÄ°×Ïß */
+		/* å»é™¤æ ‡ç­¾ä¸‹æ–¹çš„ç™½çº¿ */
 		mTabHost.setPadding(mTabHost.getPaddingLeft(),
 				mTabHost.getPaddingTop(), mTabHost.getPaddingRight(),
 				mTabHost.getPaddingBottom() - 5);
@@ -78,7 +78,7 @@ public class TabStationActivity extends TabActivity {
 
 		layout1intent.setClass(this, StationActivity.class);
 		TabHost.TabSpec layout1spec = mTabHost.newTabSpec("layout1");
-		layout1spec.setIndicator("È¥Íù"+revert+"·½Ïò");
+		layout1spec.setIndicator("å»å¾€"+revert+"æ–¹å‘");
 		layout1spec.setContent(layout1intent);
 		mTabHost.addTab(layout1spec);
 
@@ -87,16 +87,16 @@ public class TabStationActivity extends TabActivity {
 
 		layout2intent.setClass(this, StationRevertActivity.class);
 		TabHost.TabSpec layout2spec = mTabHost.newTabSpec("layout2");
-		layout2spec.setIndicator("È¥Íù"+forward+"·½Ïò");
+		layout2spec.setIndicator("å»å¾€"+forward+"æ–¹å‘");
 		layout2spec.setContent(layout2intent);
 		mTabHost.addTab(layout2spec);
 
-		/* ¶ÔTab±êÇ©µÄ¶¨ÖÆ */
+		/* å¯¹Tabæ ‡ç­¾çš„å®šåˆ¶ */
 		mTabWidget = mTabHost.getTabWidget();
 		for (int i = 0; i < mTabWidget.getChildCount(); i++) {
-			/* µÃµ½Ã¿¸ö±êÇ©µÄÊÓÍ¼ */
+			/* å¾—åˆ°æ¯ä¸ªæ ‡ç­¾çš„è§†å›¾ */
 			View view = mTabWidget.getChildAt(i);
-			/* ÉèÖÃÃ¿¸ö±êÇ©µÄ±³¾° */
+			/* è®¾ç½®æ¯ä¸ªæ ‡ç­¾çš„èƒŒæ™¯ */
 			if (mTabHost.getCurrentTab() == i) {
 				view.setBackgroundDrawable(getResources().getDrawable(
 						R.drawable.number_bg_pressed));
@@ -104,20 +104,20 @@ public class TabStationActivity extends TabActivity {
 				view.setBackgroundDrawable(getResources().getDrawable(
 						R.drawable.number_bg));
 			}
-			/* ÉèÖÃTab¼ä·Ö¸îÊúÏßµÄÑÕÉ« */
-			// tabWidget.setBackgroundColor(Color.WHITE);
-			/* ÉèÖÃTab¼ä·Ö¸îÊúÏßµÄ±³¾°Í¼Æ¬ */
-			// tabWidget.setBackgroundResource(R.drawable.icon);
-			/* ÉèÖÃtabµÄ¸ß¶È */
+            /* è®¾ç½®Tabé—´åˆ†å‰²ç«–çº¿çš„é¢œè‰² */
+            // tabWidget.setBackgroundColor(Color.WHITE);
+            /* è®¾ç½®Tabé—´åˆ†å‰²ç«–çº¿çš„èƒŒæ™¯å›¾ç‰‡ */
+            // tabWidget.setBackgroundResource(R.drawable.icon);
+            /* è®¾ç½®tabçš„é«˜åº¦ */
 			mTabWidget.getChildAt(i).getLayoutParams().height = 55;
 			TextView tv = (TextView) mTabWidget.getChildAt(i).findViewById(
 					android.R.id.title);
-			/* ÉèÖÃtabÄÚ×ÖÌåµÄÑÕÉ« */
+			/* è®¾ç½®tabå†…å­—ä½“çš„é¢œè‰² */
 			tv.setTextColor(Color.rgb(255, 255, 255));
 			tv.setGravity(Gravity.CENTER_VERTICAL);
 		}
 
-		/* µ±µã»÷TabÑ¡Ïî¿¨µÄÊ±ºò£¬¸ü¸Äµ±Ç°Tab±êÇ©µÄ±³¾° */
+		/* å½“ç‚¹å‡»Tabé€‰é¡¹å¡çš„æ—¶å€™ï¼Œæ›´æ”¹å½“å‰Tabæ ‡ç­¾çš„èƒŒæ™¯ */
 		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			@Override
 			public void onTabChanged(String tabId) {

@@ -15,7 +15,7 @@ import com.carqi.ccbus.data.BusStation;
 
 public class StationAdapter implements ListAdapter {
 	private List<BusStation> list;
-	/** ÊµÀı¼°Æä¶ÔÓ¦µÄÊÓÍ¼²¼¾ÖµÄXMLÎÄ¼ş */
+	/** å®ä¾‹åŠå…¶å¯¹åº”çš„è§†å›¾å¸ƒå±€çš„XMLæ–‡ä»¶ */
 	private LayoutInflater layoutInflater;
 	public StationAdapter(Context context, List<BusStation> list) {
 		this.list = list;
@@ -55,13 +55,13 @@ public class StationAdapter implements ListAdapter {
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if(convertView == null){
-			// ¼ÓÔØ²¼¾Ö
+			// åŠ è½½å¸ƒå±€
 			convertView = layoutInflater.inflate(R.layout.stationadapter, null);
-			// ÉèÖÃ²¼¾ÖÄÚÈİ
+			// è®¾ç½®å¸ƒå±€å†…å®¹
 			TextView tv_1 = (TextView) convertView.findViewById(R.id.bus_station);
 			TextView tv_2 = (TextView) convertView.findViewById(R.id.bus_station_no);
 			
-			//list.size() -  Log.i("Here", "position"+String.valueOf(position)+"----×ßµ½ÕâÁË£º" + list.get(position).getStation());
+			//list.size() -  Log.i("Here", "position"+String.valueOf(position)+"----ï¿½ßµï¿½ï¿½ï¿½ï¿½Ë£ï¿½" + list.get(position).getStation());
 			tv_1.setText(list.get(position).getStation());
 			tv_2.setText(String.valueOf(position+1));
 		}
@@ -83,14 +83,14 @@ public class StationAdapter implements ListAdapter {
 		return true;
 	}
 	/**
-	 * trueËùÓĞÏîÄ¿¿ÉÑ¡Ôñ¿Éµã»÷
+	 * trueæ‰€æœ‰é¡¹ç›®å¯é€‰æ‹©å¯ç‚¹å‡»
 	 */
 	public boolean areAllItemsEnabled() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 	/**
-	 * ÊÇ·ñÏÔÊ¾·Ö¸îÏß
+	 * æ˜¯å¦æ˜¾ç¤ºåˆ†å‰²çº¿
 	 */
 	public boolean isEnabled(int position) {
 		// TODO Auto-generated method stub

@@ -41,7 +41,7 @@ public class StationQueryActivity extends Activity {
 			public void onClick(View v) {
 				String line = lineText.getText().toString();
 				if(line != null && !line.equals("")){
-					Log.i(TAG, "ÏßÂ·£º" + line);
+					Log.i(TAG, "ï¿½ï¿½Â·ï¿½ï¿½" + line);
 					BusService busService = new BusService(getApplicationContext());
 					bus = busService.findBus(line);
 					if(bus != null){
@@ -70,9 +70,9 @@ public class StationQueryActivity extends Activity {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			new AlertDialog.Builder(StationQueryActivity.this)
 					.setIcon(R.drawable.ic_launcher)
-					.setTitle("³¤´ºÀëÏß¹«½»")
-					.setMessage("ÄãÈ·¶¨ÍË³öÁËÅ¶?")
-					.setPositiveButton("È·¶¨",
+					.setTitle("é•¿æ˜¥ç¦»çº¿å…¬äº¤")
+					.setMessage("ä½ ç¡®å®šé€€å‡ºäº†å“¦?")
+					.setPositiveButton("ç¡®å®š",
 							new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface arg0,
@@ -81,7 +81,7 @@ public class StationQueryActivity extends Activity {
 									StationQueryActivity.this.finish();
 								}
 
-							}).setNegativeButton("È¡Ïû", null).show();
+							}).setNegativeButton("å–æ¶ˆ", null).show();
 			return true;
 		} else {
 			return super.onKeyDown(keyCode, event);

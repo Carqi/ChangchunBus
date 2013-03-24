@@ -6,19 +6,14 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.carqi.ccbus.adapter.StationAdapter;
 import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.data.BusStation;
 
 public class StationActivity extends Activity {
-	private static final String TAG = "StationActivity";
+	//private static final String TAG = "StationActivity";
 	public static int RESULT = 1;
 	public static int REQUEST = 0;
 	private ListView listView;
@@ -36,7 +31,6 @@ public class StationActivity extends Activity {
 		for(int i=0 ; i<temp.length ; i++){
 			if(temp[i] != null && !temp[i].equals("")){
 				BusStation busSta = new BusStation();
-				Log.i(TAG, "Õ¾µã"+String.valueOf(i)+"£º" + temp[i]);
 				busSta.setStation(temp[i]);
 				stalist.add(busSta);
 			}
