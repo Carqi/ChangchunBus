@@ -60,7 +60,7 @@ public class DBManager {
                 int count = 0;
                 while ((count =inStream.read(buffer)) > 0) {
                     fos.write(buffer, 0, count);
-                		Log.e("cc", "while");
+                		Log.e(TAG, "while");
                 	fos.flush();
                 }
                 fos.close();
@@ -69,13 +69,13 @@ public class DBManager {
             database = SQLiteDatabase.openOrCreateDatabase(dbfile,null);
             return database;
         } catch (FileNotFoundException e) {
-            Log.e("cc", "File not found");
+            Log.e(TAG, "File not found");
             e.printStackTrace();
         } catch (IOException e) {
-            Log.e("cc", "IO exception");
+            Log.e(TAG, "IO exception");
             e.printStackTrace();
         } catch (Exception e){
-        	Log.e("cc", "exception "+e.toString());
+        	Log.e(TAG, "exception "+e.toString());
         }
         return null;
     }

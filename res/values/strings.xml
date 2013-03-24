@@ -1,5 +1,12 @@
 <resources>
 
     <string name="app_name">长春离线公交</string>
+    <string name="nocontent">请输入查询内容</string>
+    <string name="notargetline">没有找到相关路线</string>
+    <string name="back">返回</string>
+    <string name="query">查 询</string>
+    <string name="pleaseinputline">请输入公交线路</string>
+    <string name="line_query">线路查询</string>
+    <string name="temp">MMMMMMMMM</string>
 
 </resources>

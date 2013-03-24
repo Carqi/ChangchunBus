@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout" 
+    android:orientation="vertical" 
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF">
+    <ListView
+        android:id="@+id/busstationlist"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:divider="#EDEDED"
+        android:dividerHeight="2dp"
+        android:cacheColorHint="#00000000">
+    </ListView>
+   	<!-- android:cacheColorHint="#00000000"滑动listView时透明 -->
+</LinearLayout>
