@@ -34,6 +34,7 @@ public class TabStationActivity extends TabActivity {
 	private TabWidget mTabWidget;
 	private Bus bus = null;
 	private Button back;
+	private Button home_btn;
 	private TextView line_noText;
 	private TextView line_introText;
 	private List<String> list = new ArrayList<String>();
@@ -139,15 +140,22 @@ public class TabStationActivity extends TabActivity {
 		line_noText = (TextView) this.findViewById(R.id.line_no);
 		line_introText = (TextView) this.findViewById(R.id.line_intro);
 		back = (Button) this.findViewById(R.id.title_back);
+		home_btn = (Button) this.findViewById(R.id.title_home);
 		back.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				setResult(RESULT);
 				finish();
 			}
 		});
-		
+		home_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 	
 	

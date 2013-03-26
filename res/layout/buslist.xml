@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout" 
+    android:orientation="vertical" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF">
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/title_bar"
+        android:gravity="center_vertical" >
+
+        <Button
+            android:id="@+id/title_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/title_btn_back"
+            android:textColor="#fff"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_name"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+		<Button
+	       	android:layout_width="wrap_content"
+	       	android:layout_height="wrap_content"
+	       	android:id="@+id/title_home"
+	       	android:layout_centerVertical="true"
+			android:layout_alignParentRight="true" 
+    		android:background="@drawable/title_btn_home"/>    
+    </RelativeLayout>
+
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="65dp" 
+        android:gravity="center_vertical|center_horizontal"
+        android:id="@+id/station"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:text=""
+        />
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:background="#EEEEE0">
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+        	android:layout_gravity="center_vertical"
+	        android:textColor="#8E8E8E"
+	        android:textSize="13sp"
+	        android:layout_marginLeft="20dp"
+	        android:text="共"
+	        />
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+        	android:layout_gravity="center_vertical"
+	        android:id="@+id/total_result"
+	        android:textColor="#33b6e5"
+	        android:textSize="13sp"
+	        android:text=""
+	        />
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+        	android:layout_gravity="center_vertical"
+	        android:textColor="#8E8E8E"
+	        android:textSize="13sp"
+	        android:text="条相关线路"
+	        android:background="#EEEEE0"
+	        />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/buslist"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:divider="#EDEDED"
+        android:dividerHeight="2dp"
+        android:cacheColorHint="#00000000">
+    </ListView>
+   	<!-- android:cacheColorHint="#00000000"滑动listView时透明 -->
+</LinearLayout>

@@ -26,20 +26,21 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name=".StationActivity"
-            android:launchMode="singleTask" >
+            android:name=".StationActivity">
         </activity>
         <activity
             android:name=".StationQueryActivity"
             android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name=".TabStationActivity"
-            android:launchMode="singleTask" >
+            android:name=".TabStationActivity">
         </activity>
         <activity
             android:name=".StationRevertActivity"
             android:launchMode="singleTask" >
+        </activity>
+        <activity
+            android:name=".BusListActivity">
         </activity>
     </application>
 

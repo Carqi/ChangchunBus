@@ -21,13 +21,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/line_query" />
+        android:layout_marginLeft="5dp"
+        android:text="@string/station_query" />
 
     <EditText
         android:id="@+id/stationText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/temp" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:hint="@string/pleaseinputstation" />
     <Button
         android:id="@+id/querystation_button"
         android:layout_width="wrap_content"

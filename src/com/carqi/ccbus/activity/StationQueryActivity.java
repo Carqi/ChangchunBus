@@ -1,5 +1,9 @@
 package com.carqi.ccbus.activity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,9 +22,9 @@ import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.service.BusService;
 
 public class StationQueryActivity extends Activity {
-	private static final String TAG = "LineActivity";
+	private static final String TAG = "StationQueryActivity";
 	private Button queryButton;
-	private TextView lineText;
+	private TextView stationText;
 	private Bus bus = new Bus();
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,26 +38,28 @@ public class StationQueryActivity extends Activity {
 	
 	private void init() {
 		queryButton = (Button) this.findViewById(R.id.querystation_button);
-		lineText = (EditText) this.findViewById(R.id.stationText);
+		stationText = (EditText) this.findViewById(R.id.stationText);
 		queryButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				String line = lineText.getText().toString();
-				if(line != null && !line.equals("")){
-					Log.i(TAG, "��·��" + line);
+				List<Bus> buses = new ArrayList<Bus>();
+				String station = stationText.getText().toString();
+				if(station != null && !station.equals("")){
+					Log.i(TAG, "站点名称：" + station);
 					BusService busService = new BusService(getApplicationContext());
-					bus = busService.findBus(line);
-					if(bus != null){
-						Intent nextIntent = new Intent(getApplicationContext(), TabStationActivity.class);
+					buses = busService.findStation(station);
+					if(buses != null && buses.size()>0){
+						Intent nextIntent = new Intent(getApplicationContext(), BusListActivity.class);
 						Bundle bundle = new Bundle();
-						bundle.putSerializable("bus", bus);
+						bundle.putString("station", station);
+						//bundle.putSerializable("buses", (Serializable) buses);
 						nextIntent.putExtras(bundle);
 						startActivity(nextIntent);
 						
 						
 					}else{
-						Toast.makeText(getApplicationContext(), R.string.notargetline, Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), R.string.notargetstation, Toast.LENGTH_SHORT).show();
 					}
 				}else{
 					Toast.makeText(getApplicationContext(), R.string.nocontent, Toast.LENGTH_SHORT).show();

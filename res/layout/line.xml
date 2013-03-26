@@ -22,13 +22,21 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="@string/line_query" />
-
-    <EditText
-        android:id="@+id/lineText"
+    
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/pleaseinputline" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text=""
+        android:hint="@string/pleaseinputline" >
+
+        <requestFocus />
+    </AutoCompleteTextView>
+    
     <Button
         android:id="@+id/query_button"
         android:layout_width="wrap_content"
@@ -41,22 +49,6 @@
         android:textColor="#000000"
         android:textSize="18sp"
         android:text="@string/query" />
-    
-    <LinearLayout
-	    android:orientation="vertical" 
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content"
-	    android:background="#FFFFFF"
-	    >
-	    <ListView
-	        android:id="@+id/stationlist"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content" 
-	        android:divider="#EDEDED"
-	        android:dividerHeight="2dp"
-	        android:cacheColorHint="#00000000">
-	    </ListView>
-    </LinearLayout>
     
 
 </LinearLayout>

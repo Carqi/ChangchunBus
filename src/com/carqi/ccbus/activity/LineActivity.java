@@ -13,11 +13,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.carqi.ccbus.adapter.AutoCompleteAdater;
 import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.data.BusStation;
 import com.carqi.ccbus.service.BusService;
@@ -25,7 +27,8 @@ import com.carqi.ccbus.service.BusService;
 public class LineActivity extends Activity {
 	private static final String TAG = "LineActivity";
 	private Button queryButton;
-	private TextView lineText;
+	private AutoCompleteTextView lineText;
+	//private TextView lineText;
 	private Bus bus = new Bus();
 	private List<BusStation> stalist = new ArrayList<BusStation>();
 	
@@ -33,12 +36,21 @@ public class LineActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.line);
 		init();
+
+		
 	}
 	
 
 	private void init() {
 		queryButton = (Button) this.findViewById(R.id.query_button);
-		lineText = (EditText) this.findViewById(R.id.lineText);
+		
+		AutoCompleteAdater cursorAdapter = new AutoCompleteAdater(this, R.layout.simple_dropdown_item_1line, null, "line", android.R.id.text1);
+		// 设置输入一个字符就弹出提示列表(默认输入两个字符时才弹出提示)
+		lineText = (AutoCompleteTextView) this.findViewById(R.id.autoCompleteTextView1);
+		lineText.setThreshold(1);
+		lineText.setAdapter(cursorAdapter);
+		
+		//lineText = (EditText) this.findViewById(R.id.lineText);
 		queryButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
