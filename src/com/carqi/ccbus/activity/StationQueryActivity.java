@@ -1,6 +1,5 @@
 package com.carqi.ccbus.activity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +7,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,7 +32,7 @@ public class StationQueryActivity extends Activity {
 	private static final String TAG = "StationQueryActivity";
 	private Button queryButton;
 	private TextView stationText;
-	private Bus bus = new Bus();
+	private Drawable mIconSearchClear; // 搜索文本框清除文本内容图标
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,6 +44,9 @@ public class StationQueryActivity extends Activity {
 	
 	
 	private void init() {
+		final Resources res = getResources();
+		mIconSearchClear = res.getDrawable(R.drawable.txt_search_clear);
+		
 		queryButton = (Button) this.findViewById(R.id.querystation_button);
 		stationText = (EditText) this.findViewById(R.id.stationText);
 		queryButton.setOnClickListener(new OnClickListener() {
@@ -53,7 +63,6 @@ public class StationQueryActivity extends Activity {
 						Intent nextIntent = new Intent(getApplicationContext(), BusListActivity.class);
 						Bundle bundle = new Bundle();
 						bundle.putString("station", station);
-						//bundle.putSerializable("buses", (Serializable) buses);
 						nextIntent.putExtras(bundle);
 						startActivity(nextIntent);
 						
@@ -64,6 +73,63 @@ public class StationQueryActivity extends Activity {
 				}else{
 					Toast.makeText(getApplicationContext(), R.string.nocontent, Toast.LENGTH_SHORT).show();
 				}
+			}
+		});
+		
+		
+		stationText.addTextChangedListener(new TextWatcher() {
+			//缓存上一次文本框内是否为空
+	        private boolean isnull = true;
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (TextUtils.isEmpty(s)) {
+	                if (!isnull) {
+	                	stationText.setCompoundDrawablesWithIntrinsicBounds(null,
+	                            null, null, null);
+	                    isnull = true;
+	                }
+	            } else {
+	                if (isnull) {
+	                	stationText.setCompoundDrawablesWithIntrinsicBounds(null,
+	                            null, mIconSearchClear, null);
+	                    isnull = false;
+	                }
+	            }
+			}
+		});
+		stationText.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+	            switch (event.getAction()) {
+	            case MotionEvent.ACTION_UP:
+	                int curX = (int) event.getX();
+	                if (curX > v.getWidth() - 38
+	                        && !TextUtils.isEmpty(stationText.getText())) {
+	                	stationText.setText("");
+	                    int cacheInputType = stationText.getInputType();// backup  the input type
+	                    stationText.setInputType(InputType.TYPE_NULL);// disable soft input
+	                    stationText.onTouchEvent(event);// call native handler
+	                    stationText.setInputType(cacheInputType);// restore input  type
+	                    return true;// consume touch even
+	                }
+	                break;
+	            }
+	            return false;
 			}
 		});
 	}

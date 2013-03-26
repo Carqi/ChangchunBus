@@ -8,15 +8,21 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.carqi.ccbus.adapter.AutoCompleteAdater;
@@ -28,7 +34,7 @@ public class LineActivity extends Activity {
 	private static final String TAG = "LineActivity";
 	private Button queryButton;
 	private AutoCompleteTextView lineText;
-	//private TextView lineText;
+	private Drawable mIconSearchClear; // 搜索文本框清除文本内容图标
 	private Bus bus = new Bus();
 	private List<BusStation> stalist = new ArrayList<BusStation>();
 	
@@ -42,6 +48,9 @@ public class LineActivity extends Activity {
 	
 
 	private void init() {
+		final Resources res = getResources();
+		mIconSearchClear = res.getDrawable(R.drawable.txt_search_clear);
+		
 		queryButton = (Button) this.findViewById(R.id.query_button);
 		
 		AutoCompleteAdater cursorAdapter = new AutoCompleteAdater(this, R.layout.simple_dropdown_item_1line, null, "line", android.R.id.text1);
@@ -49,8 +58,6 @@ public class LineActivity extends Activity {
 		lineText = (AutoCompleteTextView) this.findViewById(R.id.autoCompleteTextView1);
 		lineText.setThreshold(1);
 		lineText.setAdapter(cursorAdapter);
-		
-		//lineText = (EditText) this.findViewById(R.id.lineText);
 		queryButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -86,10 +93,80 @@ public class LineActivity extends Activity {
 				}
 			}
 		});
+		
+
+		lineText.addTextChangedListener(new TextWatcher() {
+			//缓存上一次文本框内是否为空
+	        private boolean isnull = true;
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (TextUtils.isEmpty(s)) {
+	                if (!isnull) {
+	                	lineText.setCompoundDrawablesWithIntrinsicBounds(null,
+	                            null, null, null);
+	                    isnull = true;
+	                }
+	            } else {
+	                if (isnull) {
+	                	lineText.setCompoundDrawablesWithIntrinsicBounds(null,
+	                            null, mIconSearchClear, null);
+	                    isnull = false;
+	                }
+	            }
+				
+			}
+			/**
+	         * 随着文本框内容改变动态改变列表内容
+	         */
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			
+		});
+		
+		lineText.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+	            switch (event.getAction()) {
+	            case MotionEvent.ACTION_UP:
+	                int curX = (int) event.getX();
+	                if (curX > v.getWidth() - 38
+	                        && !TextUtils.isEmpty(lineText.getText())) {
+	                	lineText.setText("");
+	                    int cacheInputType = lineText.getInputType();// backup  the input type
+	                    lineText.setInputType(InputType.TYPE_NULL);// disable soft input
+	                    lineText.onTouchEvent(event);// call native handler
+	                    lineText.setInputType(cacheInputType);// restore input  type
+	                    return true;// consume touch even
+	                }
+	                break;
+	            }
+	            return false;
+			}
+		});
+		
+		
 	}
 	
-
-
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

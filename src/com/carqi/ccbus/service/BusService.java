@@ -25,6 +25,7 @@ public class BusService {
 	public Bus findBus(String line){
 		dbm.openDatabase();
 		db = dbm.getDatabase();
+		Bus bus = null;
 		String sql = "select * from bus_info1 where line like ?";
 		Cursor cursor = db.rawQuery(sql, new String[]{line+"%"});
 		if(cursor.moveToFirst()){
@@ -32,10 +33,12 @@ public class BusService {
 			String intro = cursor.getString(cursor.getColumnIndex("intro"));
 			String station = cursor.getString(cursor.getColumnIndex("station"));
 			Log.i(TAG, station);
-			return new Bus(line1, intro, station);
-		}
+			bus = new Bus(line1, intro, station);
+		} 
 		cursor.close();
-		return null;
+		dbm.closeDatabase();
+		db.close();
+		return bus;
 	}
 	
 	public List<Bus> findStation(String station){
@@ -51,6 +54,8 @@ public class BusService {
 			buses.add(new Bus(line, intro, station1));
 		}
 		cursor.close();
+		dbm.closeDatabase();
+		db.close();
 		return buses;
 	}
 	/**
