@@ -9,5 +9,7 @@
         <item name="android:ellipsize">marquee</item>       
         <item name="android:singleLine">true</item>
     </style>	
-    
+	<style name="Theme.FloatActivity" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

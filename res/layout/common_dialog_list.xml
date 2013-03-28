@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <LinearLayout
+	    android:orientation="vertical" 
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:background="#FFFFFF"
+	    >
+	    <LinearLayout 
+	   	   	android:orientation="horizontal" 
+	  	  	android:layout_width="fill_parent" 
+	    	android:layout_height="55dp"
+	        android:background="#000000"
+	        >
+		    <TextView
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" 
+	  			android:layout_gravity="center_vertical"
+    			android:layout_marginLeft="15dp"
+    			android:id="@+id/common_title"
+		        android:text="" 
+		        android:textColor="#FFFFFF"
+		        android:textSize="22dp"
+		        />
+	    </LinearLayout>
+	    <ListView
+	        android:id="@+id/commonlist"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:divider="#EDEDED"
+	        android:dividerHeight="2px"
+	        android:cacheColorHint="#00000000">
+    		<!-- android:cacheColorHint="#00000000"滑动listView时透明 -->
+	    </ListView>
+    </LinearLayout>
+</LinearLayout>

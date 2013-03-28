@@ -24,13 +24,18 @@
         android:layout_marginLeft="5dp"
         android:text="@string/station_query" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/stationText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:hint="@string/pleaseinputstation" />
+        android:singleLine="true"
+        android:text=""
+        android:hint="@string/pleaseinputstation" >
+
+        <requestFocus />
+    </AutoCompleteTextView>
     <Button
         android:id="@+id/querystation_button"
         android:layout_width="wrap_content"

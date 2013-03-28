@@ -1,5 +1,6 @@
 package com.carqi.ccbus.activity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,18 +21,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.carqi.ccbus.data.Bus;
+import com.carqi.ccbus.adapter.AutoCompleteAdater;
+import com.carqi.ccbus.data.BusStation;
 import com.carqi.ccbus.service.BusService;
 
 public class StationQueryActivity extends Activity {
 	private static final String TAG = "StationQueryActivity";
 	private Button queryButton;
-	private TextView stationText;
+	private AutoCompleteTextView stationText;
 	private Drawable mIconSearchClear; // 搜索文本框清除文本内容图标
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,25 +49,40 @@ public class StationQueryActivity extends Activity {
 		mIconSearchClear = res.getDrawable(R.drawable.txt_search_clear);
 		
 		queryButton = (Button) this.findViewById(R.id.querystation_button);
-		stationText = (EditText) this.findViewById(R.id.stationText);
+		stationText = (AutoCompleteTextView) this.findViewById(R.id.stationText);
+		AutoCompleteAdater cursorAdapter = new AutoCompleteAdater(this, R.layout.simple_dropdown_item_1line, null, "station", android.R.id.text1);
+		
+		stationText.setThreshold(2);
+		stationText.setAdapter(cursorAdapter);
+		
+		
+		
 		queryButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				List<Bus> buses = new ArrayList<Bus>();
+				List<BusStation> stalist = new ArrayList<BusStation>();
 				String station = stationText.getText().toString();
 				if(station != null && !station.equals("")){
 					Log.i(TAG, "站点名称：" + station);
 					BusService busService = new BusService(getApplicationContext());
-					buses = busService.findStation(station);
-					if(buses != null && buses.size()>0){
+					stalist = busService.showStations(station);
+					if(stalist != null && stalist.size() == 1){
 						Intent nextIntent = new Intent(getApplicationContext(), BusListActivity.class);
 						Bundle bundle = new Bundle();
-						bundle.putString("station", station);
+						bundle.putString("station", stalist.get(0).getStation());
 						nextIntent.putExtras(bundle);
 						startActivity(nextIntent);
 						
 						
+					}else if(stalist.size() > 1){
+						
+						Intent nextIntent = new Intent(getApplicationContext(), CommonListDialogActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("stalist", (Serializable) stalist);
+						bundle.putString("guide", "stationDialog");
+						nextIntent.putExtras(bundle);
+						startActivity(nextIntent);
 					}else{
 						Toast.makeText(getApplicationContext(), R.string.notargetstation, Toast.LENGTH_SHORT).show();
 					}

@@ -1,6 +1,7 @@
 package com.carqi.ccbus.activity;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,6 @@ import android.widget.Toast;
 
 import com.carqi.ccbus.adapter.AutoCompleteAdater;
 import com.carqi.ccbus.data.Bus;
-import com.carqi.ccbus.data.BusStation;
 import com.carqi.ccbus.service.BusService;
 
 public class LineActivity extends Activity {
@@ -35,8 +35,9 @@ public class LineActivity extends Activity {
 	private Button queryButton;
 	private AutoCompleteTextView lineText;
 	private Drawable mIconSearchClear; // 搜索文本框清除文本内容图标
-	private Bus bus = new Bus();
-	private List<BusStation> stalist = new ArrayList<BusStation>();
+	//private Bus bus = new Bus();
+	//private List<BusStation> stalist = new ArrayList<BusStation>();
+	private List<Bus> buslist;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,28 +63,25 @@ public class LineActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				buslist = new ArrayList<Bus>();
 				String line = lineText.getText().toString();
 				if(line != null && !line.equals("")){
 					Log.i(TAG, "站点：" + line);
 					BusService busService = new BusService(getApplicationContext());
-					bus = busService.findBus(line);
-					if(bus != null){
-						BusStation busSta = new BusStation();
-						String station = bus.getStation();
-						String[] temp = station.split("-");
-						Log.i(TAG, "站总数" + String.valueOf(temp.length));
-						for(int i=0 ; i<temp.length ; i++){
-							if(temp[i] != null && !temp[i].equals("")){
-								busSta.setStation(temp[i]);
-								stalist.add(busSta);
-							}
-						}
+					buslist = busService.findBus(line);
+					if(buslist != null && buslist.size() == 1){
 						Intent nextIntent = new Intent(getApplicationContext(), TabStationActivity.class);
 						Bundle bundle = new Bundle();
-						bundle.putSerializable("bus", bus);
+						bundle.putSerializable("bus", buslist.get(0));
 						nextIntent.putExtras(bundle);
 						startActivity(nextIntent);
-						
+					}else if(buslist.size() > 1){
+						Intent nextIntent = new Intent(getApplicationContext(), CommonListDialogActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("buslist", (Serializable) buslist);
+						bundle.putString("guide", "lineDialog");
+						nextIntent.putExtras(bundle);
+						startActivity(nextIntent);
 						
 					}else{
 						Toast.makeText(getApplicationContext(), R.string.notargetline, Toast.LENGTH_SHORT).show();
