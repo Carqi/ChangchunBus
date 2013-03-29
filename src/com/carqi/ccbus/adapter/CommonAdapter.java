@@ -11,11 +11,9 @@ import android.widget.TextView;
 
 import com.carqi.ccbus.activity.R;
 import com.carqi.ccbus.data.Bus;
-import com.carqi.ccbus.data.BusStation;
 
 public class CommonAdapter extends BaseAdapter {
 	private List<Bus> list;
-	private List<BusStation> stalist;
 	/** 实例及其对应的视图布局的XML文件 */
 	private LayoutInflater layoutInflater;
 	public CommonAdapter(Context context, List<Bus> list) {

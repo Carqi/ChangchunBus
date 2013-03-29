@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,7 +29,7 @@ import com.carqi.ccbus.adapter.AutoCompleteAdater;
 import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.service.BusService;
 
-public class LineActivity extends Activity {
+public class LineActivity extends BaseActivity {
 	private static final String TAG = "LineActivity";
 	private Button queryButton;
 	private AutoCompleteTextView lineText;
@@ -153,9 +152,9 @@ public class LineActivity extends Activity {
 	            return false;
 			}
 		});
-		
-		
+			
 	}
+	
 	
 	
 	
@@ -178,8 +177,9 @@ public class LineActivity extends Activity {
 
 								public void onClick(DialogInterface arg0,
 										int arg1) {
-									android.os.Process.killProcess(android.os.Process.myPid());
-									LineActivity.this.finish();
+									/*android.os.Process.killProcess(android.os.Process.myPid());
+									LineActivity.this.finish();*/
+									close();
 								}
 
 							}).setNegativeButton("取消", null).show();
@@ -188,5 +188,18 @@ public class LineActivity extends Activity {
 			return super.onKeyDown(keyCode, event);
 		}
 	}
+	
+	
+	
+   public void close(){
+		Intent intent = new Intent();  
+        intent.setAction("ExitApp"); // 说明动作  
+        sendBroadcast(intent);// 该函数用于发送广播  
+        finish();  
+    } 
+	
+	
+	
+	
 	
 }

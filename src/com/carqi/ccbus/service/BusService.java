@@ -100,6 +100,17 @@ public class BusService {
 		}
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/****************************some method for test**************************************/
 	public void insertStation(){
 		dbm.openDatabase();
 		db = dbm.getDatabase();
@@ -133,5 +144,38 @@ public class BusService {
 		dbm.closeDatabase();
 		db.close();
 	}
-
+	public List<String> showAllStations_temp(){
+		List<String> list = new ArrayList<String>();
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		String sql = "select station from all_station";
+		Cursor cursor = db.rawQuery(sql, null);
+		while(cursor.moveToNext()){
+			String station = cursor.getString(cursor.getColumnIndex("station"));
+			list.add(station);
+		}
+		cursor.close();
+		dbm.closeDatabase();
+		db.close();
+		return list;
+	}
+	public void MyexecSQL(){
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		//String sql = "insert into all_station(station) values ('"+station+"')";
+		String sql = "ALTER TABLE all_station ADD allLetter varchar(20)";
+		db.execSQL(sql);
+		dbm.closeDatabase();
+		db.close();
+	}
+	
+	public void update(String station, String fristLetter, String allLetter){
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		String sql = "update all_station set fristLetter = '"+fristLetter
+						+"', allLetter = '"+allLetter+"' where station = '"+station+"'";
+		db.execSQL(sql);
+		dbm.closeDatabase();
+		db.close();
+	}
 }

@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.carqi.ccbus.activity.R;
-import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.data.BusStation;
 
 public class CommonStationAdapter extends BaseAdapter {

@@ -50,6 +50,10 @@
             android:theme="@style/Theme.FloatActivity"
             android:name=".CommonListDialogActivity">
         </activity>
+        <activity
+            android:name=".ExchangeQueryActivity"
+            android:launchMode="singleTask" >
+        </activity>
     </application>
 
 </manifest>

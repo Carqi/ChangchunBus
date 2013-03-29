@@ -5,10 +5,8 @@ import java.util.List;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,7 +17,6 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.carqi.ccbus.data.Bus;
-import com.carqi.ccbus.data.BusStation;
 
 public class TabStationActivity extends TabActivity {
 	public static int RESULT = 1;
@@ -51,7 +48,7 @@ public class TabStationActivity extends TabActivity {
 		mTabHost.setPadding(mTabHost.getPaddingLeft(),
 				mTabHost.getPaddingTop(), mTabHost.getPaddingRight(),
 				mTabHost.getPaddingBottom() - 5);
-		Resources rs = getResources();
+				//Resources rs = getResources();
 
 		bus = (Bus) getIntent().getExtras().getSerializable("bus");
 		String line_no = bus.getLine();

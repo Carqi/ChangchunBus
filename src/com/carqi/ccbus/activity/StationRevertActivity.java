@@ -4,7 +4,6 @@ package com.carqi.ccbus.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +20,7 @@ import com.carqi.ccbus.data.BusStation;
  * @author gaoxy
  *
  */
-public class StationRevertActivity extends Activity {
+public class StationRevertActivity extends BaseActivity {
 	private static final String TAG = "StationActivity";
 	public static int RESULT = 1;
 	public static int REQUEST = 0;

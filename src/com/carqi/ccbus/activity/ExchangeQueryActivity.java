@@ -28,15 +28,16 @@ import com.carqi.ccbus.adapter.AutoCompleteAdater;
 import com.carqi.ccbus.data.BusStation;
 import com.carqi.ccbus.service.BusService;
 
-public class StationQueryActivity extends BaseActivity {
-	private static final String TAG = "StationQueryActivity";
+public class ExchangeQueryActivity extends BaseActivity {
+	private static final String TAG = "ExchangeQueryActivity";
 	private Button queryButton;
-	private AutoCompleteTextView stationText;
+	private AutoCompleteTextView startStationText;
+	private AutoCompleteTextView endStationText;
 	private Drawable mIconSearchClear; // 搜索文本框清除文本内容图标
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.stationquery);
+		setContentView(R.layout.exchangequery);
 		init();
 	}
 	
@@ -47,52 +48,46 @@ public class StationQueryActivity extends BaseActivity {
 		final Resources res = getResources();
 		mIconSearchClear = res.getDrawable(R.drawable.txt_search_clear);
 		
-		queryButton = (Button) this.findViewById(R.id.querystation_button);
-		stationText = (AutoCompleteTextView) this.findViewById(R.id.stationText);
+		queryButton = (Button) this.findViewById(R.id.exchangequery_button);
+		startStationText = (AutoCompleteTextView) this.findViewById(R.id.startStationText);
+		endStationText = (AutoCompleteTextView) this.findViewById(R.id.endStationText);
 		AutoCompleteAdater cursorAdapter = new AutoCompleteAdater(this, R.layout.simple_dropdown_item_1line, null, "station", android.R.id.text1);
 		
-		stationText.setThreshold(2);
-		stationText.setAdapter(cursorAdapter);
-		
+		startStationText.setThreshold(2);
+		startStationText.setAdapter(cursorAdapter);
+
+		endStationText.setThreshold(2);
+		endStationText.setAdapter(cursorAdapter);
 		
 		
 		queryButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				List<BusStation> stalist = new ArrayList<BusStation>();
-				String station = stationText.getText().toString();
-				if(station != null && !station.equals("")){
-					Log.i(TAG, "站点名称：" + station);
-					BusService busService = new BusService(getApplicationContext());
-					stalist = busService.showStations(station);
-					if(stalist != null && stalist.size() == 1){
-						Intent nextIntent = new Intent(getApplicationContext(), BusListActivity.class);
-						Bundle bundle = new Bundle();
-						bundle.putString("station", stalist.get(0).getStation());
-						nextIntent.putExtras(bundle);
-						startActivity(nextIntent);
-						
-						
-					}else if(stalist.size() > 1){
-						
-						Intent nextIntent = new Intent(getApplicationContext(), CommonListDialogActivity.class);
-						Bundle bundle = new Bundle();
-						bundle.putSerializable("stalist", (Serializable) stalist);
-						bundle.putString("guide", "stationDialog");
-						nextIntent.putExtras(bundle);
-						startActivity(nextIntent);
-					}else{
-						Toast.makeText(getApplicationContext(), R.string.notargetstation, Toast.LENGTH_SHORT).show();
-					}
+				String startStation = startStationText.getText().toString();
+				String endStation = endStationText.getText().toString();
+				Log.i(TAG, "startStation:"+startStation);
+				Log.i(TAG, "endStation:"+endStation);
+				if(startStation != null && !startStation.equals("") && endStation != null && !endStation.equals("")){
+					
+				}else if(startStation.equals("") && endStation.equals("")){
+
+					Log.i(TAG, "75----------------------:");
+					Toast.makeText(getApplicationContext(), R.string.pleaseinputstartstation, Toast.LENGTH_SHORT).show();
+				}else if(!startStation.equals("") && endStation.equals("")){
+
+					Log.i(TAG, "79----------------------:");
+					Toast.makeText(getApplicationContext(), R.string.pleaseinputendstation, Toast.LENGTH_SHORT).show();
 				}else{
-					Toast.makeText(getApplicationContext(), R.string.nocontent, Toast.LENGTH_SHORT).show();
+
+					Log.i(TAG, "84:----------------------");
+					Toast.makeText(getApplicationContext(), R.string.pleaseinputstartstation, Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
 		
 		
-		stationText.addTextChangedListener(new TextWatcher() {
+		startStationText.addTextChangedListener(new TextWatcher() {
 			//缓存上一次文本框内是否为空
 	        private boolean isnull = true;
 			
@@ -113,20 +108,20 @@ public class StationQueryActivity extends BaseActivity {
 			public void afterTextChanged(Editable s) {
 				if (TextUtils.isEmpty(s)) {
 	                if (!isnull) {
-	                	stationText.setCompoundDrawablesWithIntrinsicBounds(null,
+	                	startStationText.setCompoundDrawablesWithIntrinsicBounds(null,
 	                            null, null, null);
 	                    isnull = true;
 	                }
 	            } else {
 	                if (isnull) {
-	                	stationText.setCompoundDrawablesWithIntrinsicBounds(null,
+	                	startStationText.setCompoundDrawablesWithIntrinsicBounds(null,
 	                            null, mIconSearchClear, null);
 	                    isnull = false;
 	                }
 	            }
 			}
 		});
-		stationText.setOnTouchListener(new OnTouchListener() {
+		startStationText.setOnTouchListener(new OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -134,12 +129,12 @@ public class StationQueryActivity extends BaseActivity {
 	            case MotionEvent.ACTION_UP:
 	                int curX = (int) event.getX();
 	                if (curX > v.getWidth() - 38
-	                        && !TextUtils.isEmpty(stationText.getText())) {
-	                	stationText.setText("");
-	                    int cacheInputType = stationText.getInputType();// backup  the input type
-	                    stationText.setInputType(InputType.TYPE_NULL);// disable soft input
-	                    stationText.onTouchEvent(event);// call native handler
-	                    stationText.setInputType(cacheInputType);// restore input  type
+	                        && !TextUtils.isEmpty(startStationText.getText())) {
+	                	startStationText.setText("");
+	                    int cacheInputType = startStationText.getInputType();// backup  the input type
+	                    startStationText.setInputType(InputType.TYPE_NULL);// disable soft input
+	                    startStationText.onTouchEvent(event);// call native handler
+	                    startStationText.setInputType(cacheInputType);// restore input  type
 	                    return true;// consume touch even
 	                }
 	                break;
@@ -155,7 +150,7 @@ public class StationQueryActivity extends BaseActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			new AlertDialog.Builder(StationQueryActivity.this)
+			new AlertDialog.Builder(ExchangeQueryActivity.this)
 					.setIcon(R.drawable.ic_launcher)
 					.setTitle("长春离线公交")
 					.setMessage("你确定退出了哦?")
@@ -165,7 +160,7 @@ public class StationQueryActivity extends BaseActivity {
 								public void onClick(DialogInterface arg0,
 										int arg1) {
 									android.os.Process.killProcess(android.os.Process.myPid());
-									StationQueryActivity.this.finish();
+									ExchangeQueryActivity.this.finish();
 								}
 
 							}).setNegativeButton("取消", null).show();

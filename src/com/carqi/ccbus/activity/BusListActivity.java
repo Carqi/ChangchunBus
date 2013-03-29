@@ -2,7 +2,6 @@ package com.carqi.ccbus.activity;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +17,7 @@ import com.carqi.ccbus.adapter.BusAdapter;
 import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.service.BusService;
 
-public class BusListActivity extends Activity {
+public class BusListActivity extends BaseActivity {
 	private static final String TAG = "BusListActivity";
 	public static int RESULT = 1;
 	public static int REQUEST = 0;

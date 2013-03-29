@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 
-public class MainActivity extends TabActivity{
+public class MainActivity extends TabActivity {
 
 	private TabHost m_tabHost;
     /**
