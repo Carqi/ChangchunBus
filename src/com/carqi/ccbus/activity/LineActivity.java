@@ -194,7 +194,7 @@ public class LineActivity extends BaseActivity {
    public void close(){
 		Intent intent = new Intent();  
         intent.setAction("ExitApp"); // 说明动作  
-        sendBroadcast(intent);// 该函数用于发送广播  
+        getApplicationContext().sendBroadcast(intent);// 该函数用于发送广播  
         finish();  
     } 
 	

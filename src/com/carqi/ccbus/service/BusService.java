@@ -96,7 +96,6 @@ public class BusService {
 		}else{
 			sql = "select id as _id, station from all_station where station like ? ";
 			return db.rawQuery(sql, new String[]{"%"+line+"%"});
-			
 		}
 	}
 	
