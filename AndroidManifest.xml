@@ -54,6 +54,9 @@
             android:name=".ExchangeQueryActivity"
             android:launchMode="singleTask" >
         </activity>
+        <activity
+            android:name=".AllStationActivity">
+        </activity>
     </application>
 
 </manifest>

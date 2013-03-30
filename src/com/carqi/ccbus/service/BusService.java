@@ -99,6 +99,29 @@ public class BusService {
 		}
 	}
 	
+	/**
+	 * 从数据库获取城市数据
+	 * 
+	 * @return
+	 */
+	public List<BusStation> getAllStations() {
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		List<BusStation> list = new ArrayList<BusStation>();
+		String sql = "SELECT * FROM all_station ORDER BY fristLetter";
+		Cursor cursor = db.rawQuery(sql, null);
+		while(cursor.moveToNext()){
+			BusStation station = new BusStation();
+			station.setFristLetter(cursor.getString(cursor.getColumnIndex("fristLetter")));
+			station.setStation(cursor.getString(cursor.getColumnIndex("station")));
+			station.setAllLetter(cursor.getString(cursor.getColumnIndex("allLetter")));
+			list.add(station);
+		}
+		cursor.close();
+		dbm.closeDatabase();
+		db.close();
+		return list;
+	}
 	
 	
 	

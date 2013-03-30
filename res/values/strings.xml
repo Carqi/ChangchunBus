@@ -13,5 +13,7 @@
     <string name="pleaseinputstation">请输入站点名称</string>
     <string name="pleaseinputstartstation">请输入起点</string>
     <string name="pleaseinputendstation">请输入终点</string>
+    <string name="choosestart">选择起点</string>
+    <string name="chooseend">选择终点</string>
 
 </resources>

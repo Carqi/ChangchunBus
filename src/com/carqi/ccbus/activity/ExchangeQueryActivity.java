@@ -1,9 +1,5 @@
 package com.carqi.ccbus.activity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,12 +21,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.carqi.ccbus.adapter.AutoCompleteAdater;
-import com.carqi.ccbus.data.BusStation;
-import com.carqi.ccbus.service.BusService;
 
 public class ExchangeQueryActivity extends BaseActivity {
 	private static final String TAG = "ExchangeQueryActivity";
 	private Button queryButton;
+	private Button startStationButton;
+	private Button endStationButton;
 	private AutoCompleteTextView startStationText;
 	private AutoCompleteTextView endStationText;
 	private Drawable mIconSearchClear; // 搜索文本框清除文本内容图标
@@ -49,6 +45,9 @@ public class ExchangeQueryActivity extends BaseActivity {
 		mIconSearchClear = res.getDrawable(R.drawable.txt_search_clear);
 		
 		queryButton = (Button) this.findViewById(R.id.exchangequery_button);
+		startStationButton = (Button) this.findViewById(R.id.startStation_btn);
+		endStationButton = (Button) this.findViewById(R.id.endStation_btn);
+		
 		startStationText = (AutoCompleteTextView) this.findViewById(R.id.startStationText);
 		endStationText = (AutoCompleteTextView) this.findViewById(R.id.endStationText);
 		AutoCompleteAdater cursorAdapter = new AutoCompleteAdater(this, R.layout.simple_dropdown_item_1line, null, "station", android.R.id.text1);
@@ -58,6 +57,32 @@ public class ExchangeQueryActivity extends BaseActivity {
 
 		endStationText.setThreshold(2);
 		endStationText.setAdapter(cursorAdapter);
+		
+		startStationButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent nextIntent = new Intent(getApplicationContext(), AllStationActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("guide", "选择起点");
+				nextIntent.putExtras(bundle);
+				startActivityForResult(nextIntent, 200);
+				
+			}
+		});
+		endStationButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent nextIntent = new Intent(getApplicationContext(), AllStationActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("guide", "选择终点");
+				nextIntent.putExtras(bundle);
+				startActivityForResult(nextIntent, 200);
+				
+			}
+		});
+		
 		
 		
 		queryButton.setOnClickListener(new OnClickListener() {
@@ -142,6 +167,72 @@ public class ExchangeQueryActivity extends BaseActivity {
 	            return false;
 			}
 		});
+		
+
+		
+		endStationText.addTextChangedListener(new TextWatcher() {
+			//缓存上一次文本框内是否为空
+	        private boolean isnull = true;
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (TextUtils.isEmpty(s)) {
+	                if (!isnull) {
+	                	endStationText.setCompoundDrawablesWithIntrinsicBounds(null,
+	                            null, null, null);
+	                    isnull = true;
+	                }
+	            } else {
+	                if (isnull) {
+	                	endStationText.setCompoundDrawablesWithIntrinsicBounds(null,
+	                            null, mIconSearchClear, null);
+	                    isnull = false;
+	                }
+	            }
+			}
+		});
+		endStationText.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+	            switch (event.getAction()) {
+	            case MotionEvent.ACTION_UP:
+	                int curX = (int) event.getX();
+	                if (curX > v.getWidth() - 38
+	                        && !TextUtils.isEmpty(endStationText.getText())) {
+	                	endStationText.setText("");
+	                    int cacheInputType = endStationText.getInputType();// backup  the input type
+	                    endStationText.setInputType(InputType.TYPE_NULL);// disable soft input
+	                    endStationText.onTouchEvent(event);// call native handler
+	                    endStationText.setInputType(cacheInputType);// restore input  type
+	                    return true;// consume touch even
+	                }
+	                break;
+	            }
+	            return false;
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 	
 
@@ -167,6 +258,20 @@ public class ExchangeQueryActivity extends BaseActivity {
 			return true;
 		} else {
 			return super.onKeyDown(keyCode, event);
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == 30) {
+			String guide = data.getStringExtra("guide");
+			if(guide.equals("start")){
+				String startStation = data.getStringExtra("startStation");
+				startStationText.setText(startStation);
+			}else{
+				String endStation = data.getStringExtra("endStation");
+				endStationText.setText(endStation);
+			}
 		}
 	}
 	
