@@ -15,5 +15,6 @@
     <string name="pleaseinputendstation">请输入终点</string>
     <string name="choosestart">选择起点</string>
     <string name="chooseend">选择终点</string>
+    <string name="too_close">呃…有点儿近，咱还是走过去吧</string>
 
 </resources>

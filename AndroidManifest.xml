@@ -27,7 +27,8 @@
         </activity>
         <activity
             android:name=".LineActivity"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask" 
+            >
         </activity>
         <activity
             android:name=".StationActivity">
@@ -37,7 +38,8 @@
             android:launchMode="singleTask" >
         </activity>
         <activity
-            android:name=".TabStationActivity">
+            android:name=".TabStationActivity"
+            >
         </activity>
         <activity
             android:name=".StationRevertActivity"
@@ -56,6 +58,12 @@
         </activity>
         <activity
             android:name=".AllStationActivity">
+        </activity>
+        <activity
+            android:name=".ExchangeBusListActivity">
+        </activity>
+        <activity
+            android:name=".ExchangeBusDetailActivity">
         </activity>
     </application>
 

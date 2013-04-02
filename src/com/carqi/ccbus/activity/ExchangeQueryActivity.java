@@ -94,6 +94,17 @@ public class ExchangeQueryActivity extends BaseActivity {
 				Log.i(TAG, "startStation:"+startStation);
 				Log.i(TAG, "endStation:"+endStation);
 				if(startStation != null && !startStation.equals("") && endStation != null && !endStation.equals("")){
+					if(startStation.equals(endStation)){
+						Toast.makeText(getApplicationContext(), R.string.too_close, Toast.LENGTH_SHORT).show();
+					}else{
+						Intent nextIntent = new Intent(getApplicationContext(), ExchangeBusListActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putString("startStation", startStation);
+						bundle.putString("endStation", endStation);
+						nextIntent.putExtras(bundle);
+						startActivity(nextIntent);
+					}
+					
 					
 				}else if(startStation.equals("") && endStation.equals("")){
 

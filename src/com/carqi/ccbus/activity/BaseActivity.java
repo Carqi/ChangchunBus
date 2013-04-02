@@ -35,11 +35,11 @@ public class BaseActivity extends Activity {
     }  
   
       
-	@Override
+	/*@Override
 	protected void onDestroy() {
 	// 删除广播注册
 	getApplicationContext().unregisterReceiver(this.broadcastReceiver);
 	super.onDestroy();
-	}
+	}*/
 	
 }

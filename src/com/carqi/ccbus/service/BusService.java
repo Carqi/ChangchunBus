@@ -100,7 +100,7 @@ public class BusService {
 	}
 	
 	/**
-	 * 从数据库获取城市数据
+	 * 从数据库获取车站数据
 	 * 
 	 * @return
 	 */
@@ -122,8 +122,29 @@ public class BusService {
 		db.close();
 		return list;
 	}
-	
-	
+	/**
+	 * 直达查询
+	 * @param startStation
+	 * @param endStation
+	 * @return
+	 */
+	public List<Bus> throughBus(String startStation, String endStation){
+		List<Bus> buses = new ArrayList<Bus>();
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		String sql = "select * from (select * from bus_info1 where station like '%-"+startStation+"-%') where station like '%-"+endStation+"-%'";
+		Cursor cursor = db.rawQuery(sql, null);
+		while(cursor.moveToNext()){
+			String line = cursor.getString(cursor.getColumnIndex("line"));
+			String intro = cursor.getString(cursor.getColumnIndex("intro"));
+			String station1 = cursor.getString(cursor.getColumnIndex("station"));
+			buses.add(new Bus(line, intro, station1));
+		}
+		cursor.close();
+		dbm.closeDatabase();
+		db.close();
+		return buses;
+	}
 	
 	
 	
