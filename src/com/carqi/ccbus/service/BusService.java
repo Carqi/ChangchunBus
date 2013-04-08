@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.carqi.ccbus.data.Bus;
+import com.carqi.ccbus.data.BusExchange;
 import com.carqi.ccbus.data.BusStation;
 
 public class BusService {
@@ -128,26 +129,101 @@ public class BusService {
 	 * @param endStation
 	 * @return
 	 */
-	public List<Bus> throughBus(String startStation, String endStation){
-		List<Bus> buses = new ArrayList<Bus>();
+	public List<BusExchange> exchangeQuery(String startStation, String endStation){
+		List<BusExchange> busExcahnge = new ArrayList<BusExchange>();
 		dbm.openDatabase();
 		db = dbm.getDatabase();
 		String sql = "select * from (select * from bus_info1 where station like '%-"+startStation+"-%') where station like '%-"+endStation+"-%'";
 		Cursor cursor = db.rawQuery(sql, null);
 		while(cursor.moveToNext()){
 			String line = cursor.getString(cursor.getColumnIndex("line"));
-			String intro = cursor.getString(cursor.getColumnIndex("intro"));
+			//String intro = cursor.getString(cursor.getColumnIndex("intro"));
 			String station1 = cursor.getString(cursor.getColumnIndex("station"));
-			buses.add(new Bus(line, intro, station1));
+			busExcahnge.add(new BusExchange(station1, line));
 		}
+		if(busExcahnge.size() != 0){
+			cursor.close();
+			dbm.closeDatabase();
+			db.close();
+		}else{
+			busExcahnge = once_exchange(startStation, endStation);
+		}
+		return busExcahnge;
+		
+	}
+	/**
+	 * 一次换乘查询
+	 * @param startStation
+	 * @param endStation
+	 * @return
+	 *@date 2013-4-7
+	 */
+	public List<BusExchange> once_exchange(String startStation, String endStation) {
+		List<BusExchange> busExcahnge = new ArrayList<BusExchange>();
+		//dbm.openDatabase();
+		//db = dbm.getDatabase();
+		createTempView(db);
+		Log.i(TAG, "视图建立成功！");
+		String sql = "select bv1.StartStop as StartStation, bv1.station_line as line1," +
+				"bv1.EndStop as ExchangeStation,bv2.station_line as line2,bv2.EndStop as EndStation," +
+				"bv1.StopCount+bv2.StopCount as Total " +
+				"from bus_view bv1, bus_view bv2 " +
+				"where bv1.StartStop='"+startStation+"'" +
+				"and bv1.EndStop=bv2.StartStop " +
+				"and bv2.EndStop='"+endStation+"' order by bv1.EndStop";
+
+		Log.i(TAG, "168:"+sql);
+		Cursor cursor = db.rawQuery(sql, null);
+
+		Log.i(TAG, "It's here ~~~~~~~~~~~~~~~~~~171");
+		while(cursor.moveToNext()){
+			String startSta = cursor.getString(cursor.getColumnIndex("StartStation"));
+			String line1 = cursor.getString(cursor.getColumnIndex("line1"));
+			String exchange = cursor.getString(cursor.getColumnIndex("ExchangeStation"));
+			String line2 = cursor.getString(cursor.getColumnIndex("line2"));
+			String endSta = cursor.getString(cursor.getColumnIndex("EndStation"));
+			String total = cursor.getString(cursor.getColumnIndex("Total"));
+			busExcahnge.add(new BusExchange(startSta, line1, exchange, line2, endSta, total));
+		}
+
 		cursor.close();
 		dbm.closeDatabase();
 		db.close();
-		return buses;
+		return busExcahnge;
+	}
+	/**
+	 * 创建数据库临时视图
+	 * 
+	 *@date 2013-4-7
+	 */
+	public void createTempView(SQLiteDatabase db){
+		String db_view = "create temp view bus_view as " +
+				"select st1.station_name as StartStop,st2.[station_name] as EndStop, " +
+				"st1.station_line_id as station_line, " +
+				"st2.station_order-st1.station_order as StopCount " +
+				"from stations st1,stations st2 " +
+				"where st1.station_line_id=st2.station_line_id " +
+				"and st1.station_order<st2.station_order";
+		db.execSQL(db_view);
 	}
 	
-	
-	
+	public boolean checkStation(String station){
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		String sql = "select * from all_station where station = '"+station+"'";
+		Cursor cursor = db.rawQuery(sql, null);
+		if(cursor.moveToFirst()){
+			cursor.close();
+			dbm.closeDatabase();
+			db.close();
+			return true;
+		}else{
+			cursor.close();
+			dbm.closeDatabase();
+			db.close();
+			return false;
+		}
+	}
 	
 	
 	
@@ -179,6 +255,49 @@ public class BusService {
 		db.close();
 		
 	}
+	/**
+	 * 将所有的站点录入到站点表中
+	 * 
+	 *@date 2013-4-5
+	 */
+	public void insert_to_Stations(){
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		String sql = "select * from bus_info1";
+		Cursor cursor = db.rawQuery(sql, null);
+		while(cursor.moveToNext()){
+			String line_no = cursor.getString(cursor.getColumnIndex("line"));
+			String station = cursor.getString(cursor.getColumnIndex("station"));
+			/*if(station != null){
+				db.execSQL("insert into all_station(station) values ('"+station+"')");
+				
+			}*/
+			
+			String[] temp = station.split("-");
+			Log.i(TAG, "站总数" + String.valueOf(temp.length));
+			for(int i=0 ; i<temp.length ; i++){
+				if(temp[i] != null && !temp[i].equals("")){
+					db.execSQL("insert into stations(station_line_id, station_order, station_name) values ('"+line_no+"','"+i+"','"+temp[i]+"')");
+				}
+			}
+		}
+		cursor.close();
+		dbm.closeDatabase();
+		db.close();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void createTable(){
 		dbm.openDatabase();
 		db = dbm.getDatabase();
@@ -206,7 +325,9 @@ public class BusService {
 		dbm.openDatabase();
 		db = dbm.getDatabase();
 		//String sql = "insert into all_station(station) values ('"+station+"')";
-		String sql = "ALTER TABLE all_station ADD allLetter varchar(20)";
+		//String sql = "ALTER TABLE all_station ADD allLetter varchar(20)";
+		String sql = "CREATE TABLE stations (station_id integer primary key autoincrement, station_line_id VARCHAR(20), " +
+					 "station_order integer, station_name VARCHAR(20))";
 		db.execSQL(sql);
 		dbm.closeDatabase();
 		db.close();

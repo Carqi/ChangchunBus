@@ -12,7 +12,7 @@ public class BusServiceTest extends AndroidTestCase {
 	
 	public void testCreateTable() throws Exception{
 		BusService busService = new BusService(this.getContext());
-		busService.createTable();
+		busService.insert_to_Stations();
 	}
 	public void testInsertStation() throws Exception{
 		BusService busService = new BusService(this.getContext());

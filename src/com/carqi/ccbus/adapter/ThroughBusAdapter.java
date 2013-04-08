@@ -10,15 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.carqi.ccbus.activity.R;
-import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.data.BusExchange;
 
-public class ExchangeBusAdapter extends BaseAdapter {
+public class ThroughBusAdapter extends BaseAdapter {
 	private List<BusExchange> list;
 	private int[] stationNum;
 	/** 实例及其对应的视图布局的XML文件 */
 	private LayoutInflater layoutInflater;
-	public ExchangeBusAdapter(Context context, List<BusExchange> list, int[] stationNum) {
+	public ThroughBusAdapter(Context context, List<BusExchange> list, int[] stationNum) {
 		this.list = list;
 		this.stationNum = stationNum;
 		layoutInflater = LayoutInflater.from(context);
@@ -59,7 +58,7 @@ public class ExchangeBusAdapter extends BaseAdapter {
 			ViewCache cache = new ViewCache();
 			cache.lineText = lineText;	
 			cache.plan_noText = plan_noText;	
-			cache.stanumText = stanumText;		
+			cache.stanumText = stanumText;	
 			cache.exchagne_roleText = exchagne_roleText;	
 			convertView.setTag(cache);
 		}else{
@@ -71,10 +70,10 @@ public class ExchangeBusAdapter extends BaseAdapter {
 		}
 		BusExchange bus = list.get(position);
 		//下面代码实现数据绑定
-		lineText.setText(bus.getStartStation()+"→"+bus.getExchangeStation1()+"→"+bus.getEndStation());
+		lineText.setText(bus.getLine1());
 		plan_noText.setText("方案"+(position+1));
-		stanumText.setText("55");
-		exchagne_roleText.setText("换乘1次  最少需要");
+		stanumText.setText(String.valueOf(Math.abs(stationNum[position])));
+		exchagne_roleText.setText("直达  共");
 		return convertView;
 	}
 	private final class ViewCache{

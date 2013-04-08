@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.carqi.ccbus.adapter.AutoCompleteAdater;
+import com.carqi.ccbus.service.BusService;
 
 public class ExchangeQueryActivity extends BaseActivity {
 	private static final String TAG = "ExchangeQueryActivity";
@@ -94,18 +95,16 @@ public class ExchangeQueryActivity extends BaseActivity {
 				Log.i(TAG, "startStation:"+startStation);
 				Log.i(TAG, "endStation:"+endStation);
 				if(startStation != null && !startStation.equals("") && endStation != null && !endStation.equals("")){
-					if(startStation.equals(endStation)){
-						Toast.makeText(getApplicationContext(), R.string.too_close, Toast.LENGTH_SHORT).show();
+					BusService busService = new BusService(getApplicationContext());
+					if(busService.checkStation(startStation)){
+						if(busService.checkStation(endStation)){
+							exchangeQuery(startStation, endStation);
+						}else{
+							Toast.makeText(getApplicationContext(), R.string.end_station_notexsit, Toast.LENGTH_SHORT).show();
+						}
 					}else{
-						Intent nextIntent = new Intent(getApplicationContext(), ExchangeBusListActivity.class);
-						Bundle bundle = new Bundle();
-						bundle.putString("startStation", startStation);
-						bundle.putString("endStation", endStation);
-						nextIntent.putExtras(bundle);
-						startActivity(nextIntent);
+						Toast.makeText(getApplicationContext(), R.string.start_station_notexsit, Toast.LENGTH_SHORT).show();
 					}
-					
-					
 				}else if(startStation.equals("") && endStation.equals("")){
 
 					Log.i(TAG, "75----------------------:");
@@ -118,6 +117,24 @@ public class ExchangeQueryActivity extends BaseActivity {
 
 					Log.i(TAG, "84:----------------------");
 					Toast.makeText(getApplicationContext(), R.string.pleaseinputstartstation, Toast.LENGTH_SHORT).show();
+				}
+			}
+			/**
+			 * 当起点、终点输入都没有问题时，开始换乘查询
+			 * @param startStation
+			 * @param endStation
+			 *@date 2013-4-5
+			 */
+			private void exchangeQuery(String startStation, String endStation){
+				if(startStation.equals(endStation)){
+					Toast.makeText(getApplicationContext(), R.string.too_close, Toast.LENGTH_SHORT).show();
+				}else{
+					Intent nextIntent = new Intent(getApplicationContext(), ExchangeBusListActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("startStation", startStation);
+					bundle.putString("endStation", endStation);
+					nextIntent.putExtras(bundle);
+					startActivity(nextIntent);
 				}
 			}
 		});

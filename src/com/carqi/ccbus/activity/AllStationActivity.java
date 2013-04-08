@@ -50,7 +50,8 @@ public class AllStationActivity extends Activity{
 	private OverlayThread overlayThread;
 	private List<BusStation> allstalist;
 	private String title_text;
-
+	
+	private WindowManager windowManager;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -98,10 +99,15 @@ public class AllStationActivity extends Activity{
 	}
 
 
+	@Override
+	protected void onDestroy() {
+		windowManager.removeView(overlay);
+		super.onDestroy();
+	}
+
+
 	/**
-	 * 城市列表点击事件
-	 * 
-	 * @author sy
+	 * 站点列表点击事件
 	 * 
 	 */
 	class ListOnItemClick implements OnItemClickListener {
@@ -240,7 +246,7 @@ public class AllStationActivity extends Activity{
 		WindowManager.LayoutParams lp = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
 				WindowManager.LayoutParams.TYPE_APPLICATION, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
 				PixelFormat.TRANSLUCENT);
-		WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+		windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
 		windowManager.addView(overlay, lp);
 	}
 
