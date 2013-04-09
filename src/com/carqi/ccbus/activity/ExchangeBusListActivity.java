@@ -131,15 +131,37 @@ public class ExchangeBusListActivity extends BaseActivity {
 	 *@date 2013-4-8
 	 */
 	private void once_exchange(List<BusExchange> exchange_list) {
-		/*List<BusExchange> exchange_list2 = new ArrayList<BusExchange>();
-		for(int i=0 ; i<exchange_list.size() ; i++){
-			String line1 = exchange_list.get(i).getLine1();
-			String line2 = exchange_list.get(i).getLine2();
-			String total = exchange_list.get(i).getTotal();
-		}*/
+		List<BusExchange> exchange_list2 = new ArrayList<BusExchange>();
+		for(int i=0; i<exchange_list.size() ; i++){
+			if(i==0){
+				String startSta = exchange_list.get(i).getStartStation();
+				String line1 = exchange_list.get(i).getLine1();
+				String exchange = exchange_list.get(i).getExchangeStation1();
+				String line2 = exchange_list.get(i).getLine2();
+				String endSta = exchange_list.get(i).getEndStation();
+				String total = exchange_list.get(i).getTotal();
+				exchange_list2.add(new BusExchange(startSta, line1, exchange, line2, endSta, total));
+			}else{
+				//int len =  
+				Log.i(TAG, "exchange_list2:"+exchange_list2.get(exchange_list2.size() - 1).getExchangeStation1());
+				Log.i(TAG, "exchange_list:"+exchange_list.get(i).getExchangeStation1());
+				if(!(exchange_list2.get(exchange_list2.size() - 1).getExchangeStation1().equals(exchange_list.get(i).getExchangeStation1()))){
+
+					Log.i(TAG, "it's here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+					String startSta = exchange_list.get(i).getStartStation();
+					String line1 = exchange_list.get(i).getLine1();
+					String exchange = exchange_list.get(i).getExchangeStation1();
+					String line2 = exchange_list.get(i).getLine2();
+					String endSta = exchange_list.get(i).getEndStation();
+					String total = exchange_list.get(i).getTotal();
+					exchange_list2.add(new BusExchange(startSta, line1, exchange, line2, endSta, total));				
+				}
+			}
+			
+		}
 
 		Log.i(TAG, "145:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		ExchangeBusAdapter busAdapter = new ExchangeBusAdapter(this, exchange_list,
+		ExchangeBusAdapter busAdapter = new ExchangeBusAdapter(this, exchange_list2,
 				stanum);
 		Log.i(TAG, "145:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		listView.setAdapter(busAdapter);

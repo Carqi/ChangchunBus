@@ -63,7 +63,7 @@ public class LineActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				buslist = new ArrayList<Bus>();
-				String line = lineText.getText().toString();
+				String line = lineText.getText().toString().trim();
 				if(line != null && !line.equals("")){
 					Log.i(TAG, "站点：" + line);
 					BusService busService = new BusService(getApplicationContext());
