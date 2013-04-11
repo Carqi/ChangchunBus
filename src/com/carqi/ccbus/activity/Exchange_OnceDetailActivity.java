@@ -179,16 +179,19 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 			spannable_dis.setSpan(new ForegroundColorSpan(Color.BLUE), 3, temp_list.get(0).getLine().length()+3, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 			dis_Text.setText(spannable_dis);
 		}
+		
 		TextView last_Text = (TextView)relalayout.findViewById(TextStartID+k-1);
-		String text_str = last_Text.getText().toString();
-		String last_str = text_str.replace("/", " 至");
+		if(k!=1){
+			String text_str = last_Text.getText().toString();
+			String last_str = text_str.replace("/", " 至");
+			
+			SpannableString spannable_last = new SpannableString(last_str);
+			spannable_last.setSpan(new ForegroundColorSpan(Color.BLUE), 0, temp_list.get(k-1).getLine().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			Log.i(TAG, "最后一个TextView值:"+last_str);
+			last_Text.setText(spannable_last);
+		}
 		
-		SpannableString spannable_last = new SpannableString(last_str);
-		spannable_last.setSpan(new ForegroundColorSpan(Color.BLUE), 0, temp_list.get(k-1).getLine().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 		
-		
-		Log.i(TAG, "最后一个TextView值:"+last_str);
-		last_Text.setText(spannable_last);
 
 		Log.i(TAG, "起始站："+startStation);
 		startStationText.setText(startStation);
