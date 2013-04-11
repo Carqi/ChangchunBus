@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.carqi.ccbus.service.BusService;
 
 public class BusServiceTest extends AndroidTestCase {
-	//private static final String TAG = "BusServiceTest";
+	private static final String TAG = "BusServiceTest";
 	
 	public void testCreateTable() throws Exception{
 		BusService busService = new BusService(this.getContext());
@@ -47,6 +48,17 @@ public class BusServiceTest extends AndroidTestCase {
 			String allLetter = pinyin.converterToSpell(station);
 			busService.update(station, fristLetter, allLetter);
 		}
+	}
+	
+	public void end_pos() throws Exception {
+		String line = "62路";
+		String line_con = "306路/362路/62路/88路/";
+		int start = line_con.indexOf("/"+line) + 1;
+		int end = start + line.length();
+		String result = line_con.substring(start, end);
+		Log.i(TAG, "起始位置："+start);
+		Log.i(TAG, "终止位置："+end);
+		Log.i(TAG, "结果："+result);
 	}
 	
 }

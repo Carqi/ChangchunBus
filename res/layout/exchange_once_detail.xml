@@ -44,7 +44,7 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
@@ -70,10 +70,11 @@
                     android:text=""
                     android:textSize="18sp" />
             </LinearLayout>
-			
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:orientation="horizontal" >
 
                 <ImageView
@@ -81,21 +82,19 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/tiao"
                     android:contentDescription="@string/app_name" />
-
-                
-                
-                <TextView
-                    android:id="@+id/lineText"
+                <RelativeLayout 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center_vertical"
-                    android:text=""
-                    android:textSize="16sp" />
+                    android:paddingLeft="10dp"
+                	android:id="@+id/line_layout">
+                    
+                </RelativeLayout>
+                
+                
+                
+                
             </LinearLayout>
-            
-            
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,25 +102,24 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/tiao"
-                    android:contentDescription="@string/app_name" />
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/exchangeimage" />
 
-                
-                
                 <TextView
-                    android:id="@+id/totaldetailText"
+                    android:id="@+id/exchangeStation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/select_back2"
-                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="4dp"
                     android:text=""
-                    android:textSize="14sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
-
+            
+            
+            
             <LinearLayout
-                android:id="@+id/detailLayout"
+                android:id="@+id/detail2Layout"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:orientation="horizontal" >
@@ -133,14 +131,15 @@
                     android:contentDescription="@string/app_name" />
 
                 <TextView
-                    android:id="@+id/detail"
+                    android:id="@+id/detail2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:text="" />
             </LinearLayout>
-
-
+            
+            
+            
             
             <LinearLayout
                 android:layout_width="wrap_content"

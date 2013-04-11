@@ -10,17 +10,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.carqi.ccbus.activity.R;
-import com.carqi.ccbus.data.Bus;
 import com.carqi.ccbus.data.BusExchange;
 
 public class ExchangeBusAdapter extends BaseAdapter {
 	private List<BusExchange> list;
-	private int[] stationNum;
 	/** 实例及其对应的视图布局的XML文件 */
 	private LayoutInflater layoutInflater;
-	public ExchangeBusAdapter(Context context, List<BusExchange> list, int[] stationNum) {
+	public ExchangeBusAdapter(Context context, List<BusExchange> list) {
 		this.list = list;
-		this.stationNum = stationNum;
 		layoutInflater = LayoutInflater.from(context);
 	}
 
@@ -73,7 +70,7 @@ public class ExchangeBusAdapter extends BaseAdapter {
 		//下面代码实现数据绑定
 		lineText.setText(bus.getStartStation()+"→"+bus.getExchangeStation1()+"→"+bus.getEndStation());
 		plan_noText.setText("方案"+(position+1));
-		stanumText.setText("55");
+		stanumText.setText(bus.getTotal());
 		exchagne_roleText.setText("换乘1次  最少需要");
 		return convertView;
 	}

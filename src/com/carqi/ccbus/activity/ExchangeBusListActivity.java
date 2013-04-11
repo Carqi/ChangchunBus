@@ -1,5 +1,6 @@
 package com.carqi.ccbus.activity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class ExchangeBusListActivity extends BaseActivity {
 	public static int REQUEST = 0;
 	private ListView listView;
 	private List<BusExchange> exchange_list;
+	private List<BusExchange> exchange_list2; //传到详细页面经过筛选的换乘list
 	private TextView startStationText;
 	private TextView endStationText;
 	private Button back_btn;
@@ -130,41 +132,65 @@ public class ExchangeBusListActivity extends BaseActivity {
 	 * @param exchange_list2
 	 *@date 2013-4-8
 	 */
-	private void once_exchange(List<BusExchange> exchange_list) {
-		List<BusExchange> exchange_list2 = new ArrayList<BusExchange>();
-		for(int i=0; i<exchange_list.size() ; i++){
+	private void once_exchange( List<BusExchange> exchange_list1) {
+		exchange_list2 = new ArrayList<BusExchange>();
+		for(int i=0; i<exchange_list1.size() ; i++){
 			if(i==0){
-				String startSta = exchange_list.get(i).getStartStation();
-				String line1 = exchange_list.get(i).getLine1();
-				String exchange = exchange_list.get(i).getExchangeStation1();
-				String line2 = exchange_list.get(i).getLine2();
-				String endSta = exchange_list.get(i).getEndStation();
-				String total = exchange_list.get(i).getTotal();
-				exchange_list2.add(new BusExchange(startSta, line1, exchange, line2, endSta, total));
+				String startSta = exchange_list1.get(i).getStartStation();
+				String line1 = exchange_list1.get(i).getLine1();
+				String exchange = exchange_list1.get(i).getExchangeStation1();
+				String line1_stopCount = exchange_list1.get(i).getLine1_StopCount();
+				String line2 = exchange_list1.get(i).getLine2();
+				String endSta = exchange_list1.get(i).getEndStation();
+				String line2_stopCount = exchange_list1.get(i).getLine2_StopCount();
+				String total = exchange_list1.get(i).getTotal();
+				exchange_list2.add(new BusExchange(startSta, line1, exchange, line1_stopCount, line2, endSta, line2_stopCount, total));
 			}else{
-				//int len =  
-				Log.i(TAG, "exchange_list2:"+exchange_list2.get(exchange_list2.size() - 1).getExchangeStation1());
-				Log.i(TAG, "exchange_list:"+exchange_list.get(i).getExchangeStation1());
-				if(!(exchange_list2.get(exchange_list2.size() - 1).getExchangeStation1().equals(exchange_list.get(i).getExchangeStation1()))){
+				if(exchange_list2.get(exchange_list2.size() - 1).getExchangeStation1().equals(exchange_list1.get(i).getExchangeStation1())){
+					if(Integer.parseInt(exchange_list2.get(exchange_list2.size() - 1).getTotal()) > Integer.parseInt(exchange_list1.get(i).getTotal())){
+						String str = exchange_list1.get(i).getTotal();
+						exchange_list2.get(exchange_list2.size() - 1).setTotal(str);
+					}
+				}
+				if(!(exchange_list2.get(exchange_list2.size() - 1).getExchangeStation1().equals(exchange_list1.get(i).getExchangeStation1()))){
 
 					Log.i(TAG, "it's here~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-					String startSta = exchange_list.get(i).getStartStation();
-					String line1 = exchange_list.get(i).getLine1();
-					String exchange = exchange_list.get(i).getExchangeStation1();
-					String line2 = exchange_list.get(i).getLine2();
-					String endSta = exchange_list.get(i).getEndStation();
-					String total = exchange_list.get(i).getTotal();
-					exchange_list2.add(new BusExchange(startSta, line1, exchange, line2, endSta, total));				
+					String startSta = exchange_list1.get(i).getStartStation();
+					String line1 = exchange_list1.get(i).getLine1();
+					String exchange = exchange_list1.get(i).getExchangeStation1();
+					String line1_stopCount = exchange_list1.get(i).getLine1_StopCount();
+					String line2 = exchange_list1.get(i).getLine2();
+					String endSta = exchange_list1.get(i).getEndStation();
+					String line2_stopCount = exchange_list1.get(i).getLine2_StopCount();
+					String total = exchange_list1.get(i).getTotal();
+					exchange_list2.add(new BusExchange(startSta, line1, exchange, line1_stopCount, line2, endSta, line2_stopCount, total));				
 				}
 			}
 			
 		}
 
 		Log.i(TAG, "145:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		ExchangeBusAdapter busAdapter = new ExchangeBusAdapter(this, exchange_list2,
-				stanum);
+		ExchangeBusAdapter busAdapter = new ExchangeBusAdapter(this, exchange_list2);
 		Log.i(TAG, "145:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		listView.setAdapter(busAdapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+
+				Intent nextIntent = new Intent(getApplicationContext(),
+						Exchange_OnceDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("startStation", startStation);
+				bundle.putString("exchangeStation", exchange_list2.get(position).getExchangeStation1());
+				bundle.putString("endStation", endStation);
+				bundle.putString("plan_no", "方案" + (position + 1));
+				bundle.putSerializable("exchange_list", (Serializable) exchange_list);
+				nextIntent.putExtras(bundle);
+				startActivity(nextIntent);
+			}
+		});
 		
 		
 	}
@@ -233,6 +259,7 @@ public class ExchangeBusListActivity extends BaseActivity {
 				Bundle bundle = new Bundle();
 				bundle.putString("startStation", startStation);
 				bundle.putString("endStation", endStation);
+				bundle.putString("line", exchange_list.get(position).getLine1());
 				bundle.putString("plan_no", "方案" + (position + 1));
 				bundle.putString("detailStations",
 						detailListStations.get(position).getStation());

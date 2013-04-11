@@ -43,6 +43,29 @@ public class BusService {
 		return buses;
 	}
 	/**
+	 * 根据线路名称精确查询公交线路
+	 * @param line 线路名称
+	 * @return
+	 */
+	public List<Bus> findBus_exact(String line){
+		List<Bus> buses = new ArrayList<Bus>();
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		String sql = "select * from bus_info1 where line = ?";
+		Cursor cursor = db.rawQuery(sql, new String[]{line});
+		while(cursor.moveToNext()){
+			String line1 = cursor.getString(cursor.getColumnIndex("line"));
+			String intro = cursor.getString(cursor.getColumnIndex("intro"));
+			String station = cursor.getString(cursor.getColumnIndex("station"));
+			Log.i(TAG, station);
+			buses.add(new Bus(line1, intro, station));
+		} 
+		cursor.close();
+		dbm.closeDatabase();
+		db.close();
+		return buses;
+	}
+	/**
 	 * 根据站点名查询出包含该站点的线路信息
 	 * @param station
 	 * @return
@@ -162,11 +185,12 @@ public class BusService {
 		List<BusExchange> busExcahnge = new ArrayList<BusExchange>();
 		//dbm.openDatabase();
 		//db = dbm.getDatabase();
-		createTempView(db);
-		Log.i(TAG, "视图建立成功！");
+		//createTempView(db);
+		//Log.i(TAG, "视图建立成功！");
 		String sql = "select bv1.StartStop as StartStation, bv1.station_line as line1," +
-				"bv1.EndStop as ExchangeStation,bv2.station_line as line2,bv2.EndStop as EndStation," +
-				"bv1.StopCount+bv2.StopCount as Total " +
+				"bv1.EndStop as ExchangeStation,bv1.StopCount as line1_StopCount," +
+				"bv2.station_line as line2,bv2.EndStop as EndStation," +
+				"bv2.StopCount as line2_StopCount,bv1.StopCount+bv2.StopCount as Total " +
 				"from bus_view bv1, bus_view bv2 " +
 				"where bv1.StartStop='"+startStation+"'" +
 				"and bv1.EndStop=bv2.StartStop " +
@@ -180,10 +204,12 @@ public class BusService {
 			String startSta = cursor.getString(cursor.getColumnIndex("StartStation"));
 			String line1 = cursor.getString(cursor.getColumnIndex("line1"));
 			String exchange = cursor.getString(cursor.getColumnIndex("ExchangeStation"));
+			String line1_StopCount = cursor.getString(cursor.getColumnIndex("line1_StopCount"));
 			String line2 = cursor.getString(cursor.getColumnIndex("line2"));
 			String endSta = cursor.getString(cursor.getColumnIndex("EndStation"));
+			String line2_StopCount = cursor.getString(cursor.getColumnIndex("line2_StopCount"));
 			String total = cursor.getString(cursor.getColumnIndex("Total"));
-			busExcahnge.add(new BusExchange(startSta, line1, exchange, line2, endSta, total));
+			busExcahnge.add(new BusExchange(startSta, line1, exchange, line1_StopCount, line2, endSta, line2_StopCount, total));
 		}
 
 		cursor.close();
@@ -192,12 +218,36 @@ public class BusService {
 		return busExcahnge;
 	}
 	/**
+	 * 查询中转站数
+	 * @param startStation
+	 * @param endStation
+	 * @param line
+	 * @return 中转站数
+	 *@date 2013-4-11
+	 */
+	public String getStopCount(String startStation, String endStation, String line){
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		//createTempView(db);
+		String stopCount = null;
+		String sql = "select * from bus_view where " +
+				"StartStop='"+startStation+"' and EndStop='"+endStation+"' and station_line='"+line+"'";
+		Cursor cursor = db.rawQuery(sql, null);
+		if(cursor.moveToFirst()){
+			stopCount = cursor.getString(cursor.getColumnIndex("StopCount"));			
+		}
+		cursor.close();
+		dbm.closeDatabase();
+		db.close();
+		return stopCount;
+	}
+	/**
 	 * 创建数据库临时视图
 	 * 
 	 *@date 2013-4-7
 	 */
 	public void createTempView(SQLiteDatabase db){
-		String db_view = "create temp view bus_view as " +
+		String db_view = "create view bus_view as " +
 				"select st1.station_name as StartStop,st2.[station_name] as EndStop, " +
 				"st1.station_line_id as station_line, " +
 				"st2.station_order-st1.station_order as StopCount " +
@@ -206,7 +256,12 @@ public class BusService {
 				"and st1.station_order<st2.station_order";
 		db.execSQL(db_view);
 	}
-	
+	/**
+	 * 检验站点是否存在
+	 * @param station
+	 * @return
+	 *@date 2013-4-11
+	 */
 	public boolean checkStation(String station){
 		dbm.openDatabase();
 		db = dbm.getDatabase();

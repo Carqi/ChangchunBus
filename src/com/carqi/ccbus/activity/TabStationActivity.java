@@ -49,8 +49,12 @@ public class TabStationActivity extends TabActivity {
 				mTabHost.getPaddingTop(), mTabHost.getPaddingRight(),
 				mTabHost.getPaddingBottom() - 5);
 				//Resources rs = getResources();
-
+		
+		
 		bus = (Bus) getIntent().getExtras().getSerializable("bus");
+		
+		
+		
 		String line_no = bus.getLine();
 		String line_intro = bus.getIntro();
 		line_noText.setText(line_no);
