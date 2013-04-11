@@ -78,14 +78,17 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 		StringBuilder sb = new StringBuilder();
 		sb.append("乘坐 ");
 		k = 0;
-
+		int no_dis = 0; //不显示的控件数
 		int position = 0; //显示位置0为右边，1为左边
 		for(int i=0 ; i<exchange_list.size() ; i++){
 			if(exchangeStation.equals(exchange_list.get(i).getExchangeStation1())){
-	
+				
 				String line1_stopCount = exchange_list.get(i).getLine1_StopCount();
 				line1 = exchange_list.get(i).getLine1();
 				temp_list.add(new Bus(line1, null, null));
+				
+				
+				
 				String content = "";
 				int sub = 0;
 				int sub1 = 0;
@@ -106,7 +109,13 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 				line_Text.setText(spannableString1);
 				
 				line_Text.setId(TextStartID+k);
-
+				
+				if(k!=0 && line1.equals(temp_list.get(k-1).getLine())){
+					line_Text.setVisibility(View.GONE);
+					no_dis++;
+				}
+				
+				
 				Log.i(TAG, k+"TextView值:"+(TextStartID+k));
 				line_Text.setTextSize(16);
 				line_Text.setOnClickListener(new OnClickListener() {
@@ -159,7 +168,17 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 				k++;
 			}
 		}
-		
+		Log.i(TAG, "k值："+k);
+		Log.i(TAG, "no_dis值："+no_dis);
+		//当只显示一条路线的时候（其他全重复隐藏）
+		if((k-1)==no_dis){
+			TextView dis_Text = (TextView)relalayout.findViewById(TextStartID);
+			String dis_str = dis_Text.getText().toString();
+			String result = dis_str.replace("/", " 至");
+			SpannableString spannable_dis = new SpannableString(result);
+			spannable_dis.setSpan(new ForegroundColorSpan(Color.BLUE), 3, temp_list.get(0).getLine().length()+3, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			dis_Text.setText(spannable_dis);
+		}
 		TextView last_Text = (TextView)relalayout.findViewById(TextStartID+k-1);
 		String text_str = last_Text.getText().toString();
 		String last_str = text_str.replace("/", " 至");
