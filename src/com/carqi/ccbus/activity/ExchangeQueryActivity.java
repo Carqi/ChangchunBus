@@ -278,8 +278,7 @@ public class ExchangeQueryActivity extends BaseActivity {
 
 								public void onClick(DialogInterface arg0,
 										int arg1) {
-									android.os.Process.killProcess(android.os.Process.myPid());
-									ExchangeQueryActivity.this.finish();
+									close();
 								}
 
 							}).setNegativeButton("取消", null).show();
@@ -303,4 +302,10 @@ public class ExchangeQueryActivity extends BaseActivity {
 		}
 	}
 	
+	public void close(){
+		Intent intent = new Intent();  
+        intent.setAction("ExitApp"); // 说明动作  
+        getApplicationContext().sendBroadcast(intent);// 该函数用于发送广播  
+        finish();  
+    } 
 }
