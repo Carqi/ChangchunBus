@@ -98,6 +98,8 @@
         android:id="@+id/buslist"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
+        android:fastScrollEnabled="true" 
+        android:focusable="true" 
         android:divider="#EDEDED"
         android:dividerHeight="2dp"
         android:cacheColorHint="#00000000">

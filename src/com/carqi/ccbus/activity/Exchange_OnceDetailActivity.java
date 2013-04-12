@@ -51,7 +51,6 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
     private static int TextStartID = 0x2000000;
     private int k;
     
-	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.exchange_once_detail);
@@ -61,7 +60,8 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 		String exchangeStation = getIntent().getExtras().getString("exchangeStation");
 		endStation = getIntent().getExtras().getString("endStation");
 		
-		exchange_list = (List<BusExchange>) getIntent().getExtras().getSerializable("exchange_list");
+		BusService busService = new BusService(this);
+		exchange_list = busService.once_exchange_detail(startStation, exchangeStation, endStation);
 		
 		String plan_no = getIntent().getExtras().getString("plan_no");
 
@@ -78,36 +78,102 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 		StringBuilder sb = new StringBuilder();
 		sb.append("乘坐 ");
 		k = 0;
-		int no_dis = 0; //不显示的控件数
 		int position = 0; //显示位置0为右边，1为左边
 		for(int i=0 ; i<exchange_list.size() ; i++){
-			//取出list中中转站为=exchangeStation的记录
-			if(exchangeStation.equals(exchange_list.get(i).getExchangeStation1())){
+			
+			line1 = exchange_list.get(i).getLine1();
+			if(k==0){
+				temp_list.add(new Bus(line1, null, null));
+				String line1_stopCount = exchange_list.get(i).getLine1_StopCount();
 				
-				line1 = exchange_list.get(i).getLine1();
-				if(k==0){
+				String content = "";
+				int sub = 0;
+				int sub1 = 0;
+				
+				content = "乘坐 "+line1+"("+line1_stopCount+"站)/";
+				sub = 2;
+				sub1 = sub+1;
+				
+				Log.i(TAG, "我走到这了~~~~~~~~~~k:"+k);
+				TextView line_Text = new TextView(this);
+				SpannableString spannableString1 = new SpannableString(content);
+				spannableString1.setSpan(new ForegroundColorSpan(Color.BLUE), sub, exchange_list.get(i).getLine1().length()+sub1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+				
+				
+				
+				line_Text.setText(spannableString1);
+				
+				line_Text.setId(TextStartID+k);
+			
+				Log.i(TAG, k+"TextView值:"+(TextStartID+k));
+				line_Text.setTextSize(16);
+				line_Text.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						int x = v.getId() - TextStartID;
+						Log.i(TAG, "X is ~~~~~~~~~~~"+x);
+						BusService busService = new BusService(getApplicationContext());
+						Log.i(TAG, "83~~~:"+temp_list.get(x).getLine());
+						List<Bus> buslist = busService.findBus_exact(temp_list.get(x).getLine());
+						Intent nextIntent = new Intent(getApplicationContext(), TabStationActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("bus", buslist.get(0));
+						nextIntent.putExtras(bundle);
+						startActivity(nextIntent);
+					}
+				});
+				
+				params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				
+				 Log.i(TAG, "k值~~~~~~~"+k);
+				 
+				 
+				 if(temp_list.get(k).getLine().length()>10 && position==0){
+						if(k==0){
+							//params.addRule(RelativeLayout.BELOW, TextStartID + k);
+						}else{
+							params.addRule(RelativeLayout.BELOW, TextStartID + k - 1);
+						}
+						position = 0;
+					}else if(temp_list.get(k).getLine().length()>10 && position==1){
+						params.addRule(RelativeLayout.BELOW, TextStartID + k - 1);
+						position = 0;
+					}else if(temp_list.get(k).getLine().length()<10 && position==0){
+						params.addRule(RelativeLayout.BELOW, TextStartID + k - 1);
+						position = 1;
+					}else{
+						params.addRule(RelativeLayout.RIGHT_OF, TextStartID + k - 1);
+						params.addRule(RelativeLayout.BELOW, TextStartID + k - 2);
+						position = 0;
+					}
+					
+				
+				line_Text.setLayoutParams(params);
+
+				relalayout.addView(line_Text,params);
+				k++;
+				
+			}else{
+				if(!line1.equals(temp_list.get(k-1).getLine())){
 					temp_list.add(new Bus(line1, null, null));
 					String line1_stopCount = exchange_list.get(i).getLine1_StopCount();
 					
 					String content = "";
-					int sub = 0;
-					int sub1 = 0;
-					
-					content = "乘坐 "+line1+"("+line1_stopCount+"站)/";
-					sub = 2;
-					sub1 = sub+1;
+					content = line1+"("+line1_stopCount+"站)/";
 					
 					Log.i(TAG, "我走到这了~~~~~~~~~~k:"+k);
 					TextView line_Text = new TextView(this);
 					SpannableString spannableString1 = new SpannableString(content);
-					spannableString1.setSpan(new ForegroundColorSpan(Color.BLUE), sub, exchange_list.get(i).getLine1().length()+sub1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+					spannableString1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, exchange_list.get(i).getLine1().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 					
 					
 					
 					line_Text.setText(spannableString1);
 					
 					line_Text.setId(TextStartID+k);
-				
+					
+					
 					Log.i(TAG, k+"TextView值:"+(TextStartID+k));
 					line_Text.setTextSize(16);
 					line_Text.setOnClickListener(new OnClickListener() {
@@ -115,6 +181,7 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 						@Override
 						public void onClick(View v) {
 							int x = v.getId() - TextStartID;
+							//int w = v.getId();
 							Log.i(TAG, "X is ~~~~~~~~~~~"+x);
 							BusService busService = new BusService(getApplicationContext());
 							Log.i(TAG, "83~~~:"+temp_list.get(x).getLine());
@@ -127,7 +194,9 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 						}
 					});
 					
-					params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+					
+					
+					 params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 					
 					 Log.i(TAG, "k值~~~~~~~"+k);
 					 
@@ -156,82 +225,7 @@ public class Exchange_OnceDetailActivity extends BaseActivity {
 
 					relalayout.addView(line_Text,params);
 					k++;
-					
-				}else{
-					if(!line1.equals(temp_list.get(k-1).getLine())){
-						temp_list.add(new Bus(line1, null, null));
-						String line1_stopCount = exchange_list.get(i).getLine1_StopCount();
-						
-						String content = "";
-						content = line1+"("+line1_stopCount+"站)/";
-						
-						Log.i(TAG, "我走到这了~~~~~~~~~~k:"+k);
-						TextView line_Text = new TextView(this);
-						SpannableString spannableString1 = new SpannableString(content);
-						spannableString1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, exchange_list.get(i).getLine1().length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-						
-						
-						
-						line_Text.setText(spannableString1);
-						
-						line_Text.setId(TextStartID+k);
-						
-						
-						Log.i(TAG, k+"TextView值:"+(TextStartID+k));
-						line_Text.setTextSize(16);
-						line_Text.setOnClickListener(new OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								int x = v.getId() - TextStartID;
-								//int w = v.getId();
-								Log.i(TAG, "X is ~~~~~~~~~~~"+x);
-								BusService busService = new BusService(getApplicationContext());
-								Log.i(TAG, "83~~~:"+temp_list.get(x).getLine());
-								List<Bus> buslist = busService.findBus_exact(temp_list.get(x).getLine());
-								Intent nextIntent = new Intent(getApplicationContext(), TabStationActivity.class);
-								Bundle bundle = new Bundle();
-								bundle.putSerializable("bus", buslist.get(0));
-								nextIntent.putExtras(bundle);
-								startActivity(nextIntent);
-							}
-						});
-						
-						
-						
-						 params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-						
-						 Log.i(TAG, "k值~~~~~~~"+k);
-						 
-						 
-						 if(temp_list.get(k).getLine().length()>10 && position==0){
-								if(k==0){
-									//params.addRule(RelativeLayout.BELOW, TextStartID + k);
-								}else{
-									params.addRule(RelativeLayout.BELOW, TextStartID + k - 1);
-								}
-								position = 0;
-							}else if(temp_list.get(k).getLine().length()>10 && position==1){
-								params.addRule(RelativeLayout.BELOW, TextStartID + k - 1);
-								position = 0;
-							}else if(temp_list.get(k).getLine().length()<10 && position==0){
-								params.addRule(RelativeLayout.BELOW, TextStartID + k - 1);
-								position = 1;
-							}else{
-								params.addRule(RelativeLayout.RIGHT_OF, TextStartID + k - 1);
-								params.addRule(RelativeLayout.BELOW, TextStartID + k - 2);
-								position = 0;
-							}
-							
-						
-						line_Text.setLayoutParams(params);
-
-						relalayout.addView(line_Text,params);
-						k++;
-					}
 				}
-				
-				
 			}
 		}
 		int sub =0;

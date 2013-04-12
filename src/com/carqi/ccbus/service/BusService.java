@@ -176,6 +176,7 @@ public class BusService {
 	}
 	/**
 	 * 一次换乘查询
+	 * 查询结果为无重复中转站的前30条记录
 	 * @param startStation
 	 * @param endStation
 	 * @return
@@ -183,18 +184,15 @@ public class BusService {
 	 */
 	public List<BusExchange> once_exchange(String startStation, String endStation) {
 		List<BusExchange> busExcahnge = new ArrayList<BusExchange>();
-		//dbm.openDatabase();
-		//db = dbm.getDatabase();
-		//createTempView(db);
-		//Log.i(TAG, "视图建立成功！");
+		
 		String sql = "select bv1.StartStop as StartStation, bv1.station_line as line1," +
-				"bv1.EndStop as ExchangeStation,bv1.StopCount as line1_StopCount," +
-				"bv2.station_line as line2,bv2.EndStop as EndStation," +
-				"bv2.StopCount as line2_StopCount,bv1.StopCount+bv2.StopCount as Total " +
+				"bv1.EndStop as ExchangeStation, bv1.StopCount as 'line1_StopCount', " +
+				"bv2.station_line as line2, bv2.EndStop as EndStation, " +
+				"bv2.StopCount as 'line2_StopCount', min(bv1.StopCount+bv2.StopCount) as Total " +
 				"from bus_view bv1, bus_view bv2 " +
-				"where bv1.StartStop='"+startStation+"'" +
-				"and bv1.EndStop=bv2.StartStop " +
-				"and bv2.EndStop='"+endStation+"' order by bv1.EndStop";
+				"where bv1.StartStop='"+startStation+"' and bv1.EndStop=bv2.StartStop " +
+				"and bv2.EndStop='"+endStation+"' group by bv1.EndStop order by Total limit 30 ";
+		
 
 		Log.i(TAG, "168:"+sql);
 		Cursor cursor = db.rawQuery(sql, null);
@@ -217,6 +215,52 @@ public class BusService {
 		db.close();
 		return busExcahnge;
 	}
+
+	/**
+	 * 一次换乘查询
+	 * 查询结果为相同中转站的所有记录
+	 * @param startStation
+	 * @param endStation
+	 * @return
+	 *@date 2013-4-7
+	 */
+	public List<BusExchange> once_exchange_detail(String startStation, String exchangeStation, String endStation) {
+		List<BusExchange> busExcahnge = new ArrayList<BusExchange>();
+		dbm.openDatabase();
+		db = dbm.getDatabase();
+		String sql = "select bv1.StartStop as StartStation, bv1.station_line as line1, " +
+				"bv1.EndStop as ExchangeStation, bv1.StopCount as 'line1_StopCount'," +
+				"bv2.station_line as line2, bv2.EndStop as EndStation, " +
+				"bv2.StopCount as 'line2_StopCount', bv1.StopCount+bv2.StopCount as Total " +
+				"from bus_view bv1, bus_view bv2 " +
+				"where bv1.StartStop='"+startStation+"' and bv1.EndStop=bv2.StartStop " +
+				"and bv2.EndStop='"+endStation+"' and ExchangeStation ='"+exchangeStation+"' order by Total";
+		Log.i(TAG, "查询语句："+sql);
+		Cursor cursor = db.rawQuery(sql, null);
+
+		while(cursor.moveToNext()){
+			Log.i(TAG, "查询有记录~~~~~~~~~~~~~~");
+			String startSta = cursor.getString(cursor.getColumnIndex("StartStation"));
+			String line1 = cursor.getString(cursor.getColumnIndex("line1"));
+			String exchange = cursor.getString(cursor.getColumnIndex("ExchangeStation"));
+			String line1_StopCount = cursor.getString(cursor.getColumnIndex("line1_StopCount"));
+			String line2 = cursor.getString(cursor.getColumnIndex("line2"));
+			String endSta = cursor.getString(cursor.getColumnIndex("EndStation"));
+			String line2_StopCount = cursor.getString(cursor.getColumnIndex("line2_StopCount"));
+			String total = cursor.getString(cursor.getColumnIndex("Total"));
+			busExcahnge.add(new BusExchange(startSta, line1, exchange, line1_StopCount, line2, endSta, line2_StopCount, total));
+		}
+
+		cursor.close();
+		dbm.closeDatabase();
+		db.close();
+		return busExcahnge;
+	}
+	
+	
+	
+	
+	
 	/**
 	 * 查询中转站数
 	 * @param startStation
