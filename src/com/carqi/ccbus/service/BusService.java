@@ -250,10 +250,10 @@ public class BusService {
 		String db_view = "create view bus_view as " +
 				"select st1.station_name as StartStop,st2.[station_name] as EndStop, " +
 				"st1.station_line_id as station_line, " +
-				"st2.station_order-st1.station_order as StopCount " +
+				"abs(st2.station_order-st1.station_order) as StopCount " +
 				"from stations st1,stations st2 " +
 				"where st1.station_line_id=st2.station_line_id " +
-				"and st1.station_order<st2.station_order";
+				"and st1.station_order!=st2.station_order";
 		db.execSQL(db_view);
 	}
 	/**
