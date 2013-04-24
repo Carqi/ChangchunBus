@@ -27,6 +27,8 @@ public class CommonListDialogActivity extends Activity {
 	private List<BusStation> stalist;
 	private String guide; 
 	
+	private Boolean isStart; //网络查询时，是否是起点标志
+	
 	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,7 +45,20 @@ public class CommonListDialogActivity extends Activity {
 			commonText.setText("为您找到以下相关线路：");
 			CommonAdapter comAdapter = new CommonAdapter(this, buslist);
 			listView.setAdapter(comAdapter);
-		} else{
+		}else if(guide.equals("netDialog")){
+			isStart = getIntent().getExtras().getBoolean("isStart");
+			buslist = (List<Bus>) getIntent().getExtras().getSerializable("buslist");
+			if(isStart){
+				commonText.setText("您要找的起点是：");
+				CommonAdapter comAdapter = new CommonAdapter(this, buslist);
+				listView.setAdapter(comAdapter);
+			}else{
+				commonText.setText("您要找的终点是：");
+				CommonAdapter comAdapter = new CommonAdapter(this, buslist);
+				listView.setAdapter(comAdapter);
+			}
+			
+		}else{
 			Log.i(TAG, "here ~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			stalist = (List<BusStation>) getIntent().getExtras().getSerializable("stalist");
 
@@ -65,15 +80,23 @@ public class CommonListDialogActivity extends Activity {
 					bundle.putSerializable("bus", buslist.get(position));
 					nextIntent.putExtras(bundle);
 					startActivity(nextIntent);
-					CommonListDialogActivity.this.finish();
+				}else if(guide.equals("netDialog")){
+					Intent intent = new Intent();
+					if(isStart){
+						intent.putExtra("start", buslist.get(position).getLine());
+						setResult(30, intent);
+					}else{
+						intent.putExtra("end", buslist.get(position).getLine());
+						setResult(40, intent);
+					}
 				}else{
 					Intent nextIntent = new Intent(getApplicationContext(), BusListActivity.class);
 					Bundle bundle = new Bundle();
 					bundle.putString("station", stalist.get(position).getStation());
 					nextIntent.putExtras(bundle);
 					startActivity(nextIntent);
-					CommonListDialogActivity.this.finish();
 				}
+				CommonListDialogActivity.this.finish();
 				
 			}
 		});

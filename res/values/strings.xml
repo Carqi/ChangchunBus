@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">长春离线公交</string>
+    <string name="app_name">长春公交</string>
     <string name="nocontent">请输入查询内容</string>
     <string name="notargetline">没有找到相关线路</string>
     <string name="notargetstation">没有找到相关站点</string>
@@ -10,6 +10,7 @@
     <string name="line_query">线路查询</string>
     <string name="station_query">站点查询</string>
     <string name="exchange_query">换乘查询</string>
+    <string name="net_query">网络查询</string>
     <string name="pleaseinputstation">请输入站点名称</string>
     <string name="pleaseinputstartstation">请输入起点</string>
     <string name="pleaseinputendstation">请输入终点</string>
