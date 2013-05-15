@@ -21,5 +21,6 @@
     <string name="end_station_notexsit">无相关终点，请重新输入</string>
     <string name="sorry_title"> 抱歉！</string>
     <string name="sorry_content">没有查询到合适的换乘方案，若要获得更详细的查询结果，请使用网络查询。</string>
-
+	<string name="about_our">关于我们</string>
+    
 </resources>

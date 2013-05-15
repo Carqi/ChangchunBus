@@ -28,6 +28,7 @@
             	android:layout_height="wrap_content"
             	android:orientation="vertical" >
             		<RelativeLayout
+            		    android:id="@+id/shared"
             			android:layout_width="fill_parent"
             			android:layout_height="50dp"
             			android:layout_marginTop="14dp"
@@ -51,6 +52,7 @@
         					android:src="@drawable/mm_submenu" />      					
       				</RelativeLayout>
       				<RelativeLayout
+      				    android:id="@+id/send_email"
             			android:layout_width="fill_parent"
             			android:layout_height="50dp"
             			android:gravity="center_vertical"
@@ -97,6 +99,7 @@
         					android:src="@drawable/mm_submenu" /> 					
       				</RelativeLayout>
       				<RelativeLayout
+      				    android:id="@+id/about_our"
             			android:layout_width="fill_parent"
             			android:layout_height="50dp"
             			android:gravity="center_vertical"

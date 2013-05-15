@@ -92,6 +92,9 @@
         <activity
             android:name=".MoreActivity">
         </activity>
+        <activity
+            android:name=".AboutOurActivity">
+        </activity>
     </application>
 
 </manifest>
