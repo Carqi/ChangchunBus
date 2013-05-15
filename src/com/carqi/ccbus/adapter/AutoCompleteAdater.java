@@ -25,11 +25,11 @@ public class AutoCompleteAdater extends SimpleCursorAdapter {
 	 */
 	@Override
 	public Cursor runQueryOnBackgroundThread(CharSequence constraint) {
-		/*if (constraint != null) {
+		if (constraint != null) {
 			return getBusService().query((String) constraint, queryField);
-		} else {*/
+		} else {
 			return null;
-		
+		}
 	}
 
 	/**

@@ -34,6 +34,6 @@
 	        android:layout_centerVertical="true"
 	        android:layout_marginRight="20dp"
 	        android:layout_toRightOf="@id/bus_station"
-	        android:src="@drawable/ic_launcher" />
+	        android:src="@drawable/link_arrow" />
 
 </RelativeLayout>

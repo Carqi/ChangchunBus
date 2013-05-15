@@ -89,6 +89,9 @@
         <activity android:name=".MapViewActivity" android:screenOrientation="sensor" 
         	android:configChanges="orientation|keyboardHidden"> 
         </activity>
+        <activity
+            android:name=".MoreActivity">
+        </activity>
     </application>
 
 </manifest>

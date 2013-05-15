@@ -34,7 +34,7 @@ public class ExchangeBusListActivity extends BaseActivity {
 	private TextView startStationText;
 	private TextView endStationText;
 	private Button back_btn;
-	private Button home_btn;
+	private Button exchange_btn;
 	private TextView titleText;
 	private TextView sorry_title_Text;
 	private TextView sorry_content_Text;
@@ -252,7 +252,7 @@ public class ExchangeBusListActivity extends BaseActivity {
 		sorry_content_Text.setVisibility(View.GONE);
 		
 		back_btn = (Button) this.findViewById(R.id.title_back);
-		home_btn = (Button) this.findViewById(R.id.title_home);
+		exchange_btn = (Button) this.findViewById(R.id.title_exchange);
 		back_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -261,12 +261,17 @@ public class ExchangeBusListActivity extends BaseActivity {
 				finish();
 			}
 		});
-		home_btn.setOnClickListener(new OnClickListener() {
+		exchange_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-				startActivity(intent);
+				Intent nextIntent = new Intent(getApplicationContext(), ExchangeBusListActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("startStation", endStation);
+				bundle.putString("endStation", startStation);
+				nextIntent.putExtras(bundle);
+				startActivity(nextIntent);
+				ExchangeBusListActivity.this.finish();
 			}
 		});
 	}

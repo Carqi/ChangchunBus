@@ -191,6 +191,7 @@ public class NetActivity extends MapActivity{
 						Log.i(TAG, "195起点："+start+"终点："+end);
 						isStart = true;
 						mkSearch.suggestionSearch(start);
+						
 					}
 					
 					
