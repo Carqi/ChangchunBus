@@ -1,0 +1,2 @@
+select line,count(*) from bus_info1 group by line having count(*)>1
+
